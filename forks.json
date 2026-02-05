@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-05T21:48:34.887Z",
+  "lastUpdated": "2026-02-05T21:54:30.474Z",
   "generatedWith": "GitHub Models API",
   "forks": [
     {
@@ -7,7 +7,7 @@
       "name": "mosesyebei.github.io",
       "displayName": "mosesyebei.github.io",
       "description": "portfolio",
-      "summary": "A compelling CSS project that explores mosesyebei.github.io. Worth diving into for developers interested in modern software patterns and clean implementations.",
+      "summary": "Exploring mosesyebei.github.io — a CSS repository that caught my attention. It showcases techniques worth understanding for any serious developer.",
       "url": "https://github.com/moses-y/mosesyebei.github.io",
       "language": "CSS",
       "stars": 0,
@@ -16,7 +16,7 @@
       "parent": null,
       "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop&q=80",
       "forkedAt": "August 8, 2023",
-      "updatedAt": "February 6, 2026",
+      "updatedAt": "February 5, 2026",
       "readTime": 2
     },
     {
@@ -120,8 +120,8 @@
         "stars": 398
       },
       "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=400&fit=crop&q=80",
-      "forkedAt": "February 4, 2026",
-      "updatedAt": "February 4, 2026",
+      "forkedAt": "February 3, 2026",
+      "updatedAt": "February 3, 2026",
       "readTime": 2
     },
     {
@@ -129,7 +129,7 @@
       "name": "lamb",
       "displayName": "lamb",
       "description": "Tiny Pure Functional Programming Language in C",
-      "summary": "Exploring lamb — a various technologies repository that caught my attention. It showcases techniques worth understanding for any serious developer.",
+      "summary": "A compelling various technologies project that explores lamb. Worth diving into for developers interested in modern software patterns and clean implementations.",
       "url": "https://github.com/moses-y/lamb",
       "language": null,
       "stars": 0,
@@ -141,8 +141,8 @@
         "stars": 185
       },
       "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&h=400&fit=crop&q=80",
-      "forkedAt": "February 4, 2026",
-      "updatedAt": "February 4, 2026",
+      "forkedAt": "February 3, 2026",
+      "updatedAt": "February 3, 2026",
       "readTime": 2
     },
     {
@@ -162,8 +162,8 @@
         "stars": 19
       },
       "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop&q=80",
-      "forkedAt": "February 4, 2026",
-      "updatedAt": "February 4, 2026",
+      "forkedAt": "February 3, 2026",
+      "updatedAt": "February 3, 2026",
       "readTime": 2
     },
     {
@@ -183,8 +183,8 @@
         "stars": 20421
       },
       "image": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=400&fit=crop&q=80",
-      "forkedAt": "February 4, 2026",
-      "updatedAt": "February 4, 2026",
+      "forkedAt": "February 3, 2026",
+      "updatedAt": "February 3, 2026",
       "readTime": 2
     }
   ]
