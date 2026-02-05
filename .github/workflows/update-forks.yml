@@ -2,9 +2,17 @@ name: Update Forks Feed
 
 on:
   schedule:
-    # Runs daily at midnight UTC
-    - cron: '0 0 * * *'
-  workflow_dispatch: # Allow manual trigger
+    # Run every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch: # Manual trigger
+  repository_dispatch:
+    types: [update-forks] # Trigger via API
+  push:
+    branches:
+      - master
+    paths:
+      - 'scripts/update-forks.js'
+      - '.github/workflows/update-forks.yml'
 
 permissions:
   contents: write
@@ -31,4 +39,4 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add forks.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Update forks feed [skip ci]" && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update forks feed [skip ci]" && git push)
