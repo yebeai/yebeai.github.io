@@ -8,8 +8,9 @@ const CONFIG = {
   reposToShow: 9,
   apiDelay: 500, // ms between requests
   models: {
-    endpoint: 'https://models.github.ai/inference/chat/completions',
-    model: 'openai/gpt-4o-mini',
+    // GitHub Models API endpoint
+    endpoint: 'https://models.inference.ai.azure.com/chat/completions',
+    model: 'gpt-4o-mini',
     maxTokens: 150,
     temperature: 0.7
   }
