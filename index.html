@@ -702,6 +702,60 @@
             font-size: 0.8rem;
         }
 
+        /* Pagination */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 48px;
+        }
+
+        .pagination-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            background: var(--bg-card-hover);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .pagination-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            min-width: 120px;
+        }
+
+        .pagination-current {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .pagination-total {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+        }
+
         /* Services Grid */
         .services-grid {
             display: grid;
@@ -1160,6 +1214,20 @@
                     <p>Loading latest explorations...</p>
                 </div>
             </div>
+            <div id="pagination" class="pagination" style="display: none;">
+                <button class="pagination-btn" id="prev-btn" onclick="changePage(-1)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                    Previous
+                </button>
+                <div class="pagination-info">
+                    <span class="pagination-current" id="page-info">1-10</span>
+                    <span class="pagination-total" id="total-info">of 200 repos</span>
+                </div>
+                <button class="pagination-btn" id="next-btn" onclick="changePage(1)">
+                    Next
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+            </div>
             <p id="last-updated" class="last-updated"></p>
         </div>
     </section>
@@ -1413,9 +1481,51 @@
             `;
         }
 
+        // Pagination state
+        let allProjects = [];
+        let currentPage = 1;
+        const itemsPerPage = 10;
+
+        // Render current page
+        function renderCurrentPage() {
+            const container = document.getElementById('projects-container');
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageProjects = allProjects.slice(start, end);
+
+            container.innerHTML = pageProjects.map(renderProject).join('');
+
+            // Update pagination info
+            const totalPages = Math.ceil(allProjects.length / itemsPerPage);
+            const showStart = start + 1;
+            const showEnd = Math.min(end, allProjects.length);
+
+            document.getElementById('page-info').textContent = `${showStart}-${showEnd}`;
+            document.getElementById('total-info').textContent = `of ${allProjects.length} repos`;
+            document.getElementById('prev-btn').disabled = currentPage === 1;
+            document.getElementById('next-btn').disabled = currentPage === totalPages;
+
+            // Scroll to projects section
+            if (currentPage > 1) {
+                document.getElementById('projects').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // Change page
+        function changePage(direction) {
+            const totalPages = Math.ceil(allProjects.length / itemsPerPage);
+            const newPage = currentPage + direction;
+
+            if (newPage >= 1 && newPage <= totalPages) {
+                currentPage = newPage;
+                renderCurrentPage();
+            }
+        }
+
         // Load projects
         async function loadProjects() {
             const container = document.getElementById('projects-container');
+            const pagination = document.getElementById('pagination');
             const updatedEl = document.getElementById('last-updated');
 
             try {
@@ -1428,7 +1538,13 @@
                     return;
                 }
 
-                container.innerHTML = data.forks.map(renderProject).join('');
+                allProjects = data.forks;
+                renderCurrentPage();
+
+                // Show pagination if more than one page
+                if (allProjects.length > itemsPerPage) {
+                    pagination.style.display = 'flex';
+                }
 
                 if (data.lastUpdated) {
                     updatedEl.textContent = `Last updated: ${new Date(data.lastUpdated).toLocaleDateString('en-US', {
@@ -1438,9 +1554,9 @@
             } catch (e) {
                 // Fallback to GitHub API
                 try {
-                    const res = await fetch('https://api.github.com/users/yebeai/repos?sort=updated&per_page=9');
+                    const res = await fetch('https://api.github.com/users/yebeai/repos?sort=updated&per_page=30');
                     const repos = await res.json();
-                    const fallback = repos.map((r, i) => ({
+                    allProjects = repos.map((r, i) => ({
                         id: r.id, name: r.name,
                         displayName: r.name.replace(/-/g, ' ').replace(/_/g, ' '),
                         description: r.description || 'An interesting project.',
@@ -1450,7 +1566,10 @@
                         image: `https://images.unsplash.com/photo-${['1461749280684-dccba630e2f6','1555066931-4365d14bab8c','1504639725590-34d0984388bd'][i % 3]}?w=800&h=400&fit=crop`,
                         readTime: 2
                     }));
-                    container.innerHTML = fallback.map(renderProject).join('');
+                    renderCurrentPage();
+                    if (allProjects.length > itemsPerPage) {
+                        pagination.style.display = 'flex';
+                    }
                 } catch {
                     container.innerHTML = '<div class="projects-loading"><p>Unable to load projects.</p></div>';
                 }
