@@ -159,25 +159,39 @@ README EXCERPT:
 ${readme || 'No README available'}
 `.trim();
 
-    const prompt = `You're a developer writing a quick technical post about this repo for your blog.
+    const prompt = `You're a developer writing a Medium-style technical blog post about this repo.
 
 ${context}
 
-Write 4-5 paragraphs. Rules:
-- Start with a specific problem this solves or why you'd actually use it. No "In the world of..." or "In today's landscape..." openings.
-- Be concrete: mention actual files, functions, or patterns you see in the structure
-- Write like you're explaining to a coworker, not writing marketing copy
-- Include a real use case from your experience or an obvious practical scenario
-- End with your honest take - what's good, what could be better
+FORMAT (use markdown):
+## The Problem
+One paragraph about the specific pain point this solves. Be concrete.
 
-AVOID these AI-sounding phrases:
+## What This Does
+2-3 short paragraphs. Reference actual files/folders from the structure. Use \`inline code\` for file names and functions.
+
+## Real-World Use
+A practical scenario. Maybe a code snippet or example workflow.
+
+## The Bottom Line
+Your honest take in 2-3 sentences. What's good, what's not, who should use it.
+
+---
+
+STYLE RULES:
+- Short paragraphs (2-4 sentences max)
+- Use \`code formatting\` for technical terms
+- Be specific: "the config.yaml handles..." not "it provides configuration..."
+- Write like you're explaining to a coworker over coffee
+- Have opinions. "This is overkill for small projects" is fine.
+
+NEVER USE:
 - "rapidly evolving", "paramount", "leverage", "streamline", "robust"
 - "In the realm of...", "It's worth noting...", "This project aims to..."
-- "comprehensive solution", "cutting-edge", "game-changer", "seamlessly"
-- Starting sentences with "This" repeatedly
-- Vague praise without specifics
+- "comprehensive", "cutting-edge", "game-changer", "seamlessly", "foster"
+- Starting multiple sentences with "This" or "The"
 
-Write like a tired engineer who actually uses this stuff, not a marketing person. Be direct. Be specific. Have opinions.`;
+Keep it under 400 words. Quality over quantity.`;
 
     console.log(`  Using model: ${model}`);
     const response = await fetch(CONFIG.models.endpoint, {
