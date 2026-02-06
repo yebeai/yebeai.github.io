@@ -17,6 +17,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: update-forks
+  cancel-in-progress: true
+
 jobs:
   update-forks:
     runs-on: ubuntu-latest
@@ -39,4 +43,4 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add forks.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update forks feed [skip ci]" && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update forks feed [skip ci]" && git pull --rebase && git push)

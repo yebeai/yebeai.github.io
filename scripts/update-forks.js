@@ -383,8 +383,11 @@ async function main() {
         }
       }
 
-      const finalArticle = article || generateFallbackSummary(repo);
-      console.log(`  - Article: ${finalArticle.length} chars ${article ? '(AI generated)' : '(fallback)'}`);
+      // Prefer: AI article > existing article > fallback
+      const existing = existingArticles.get(repo.id);
+      const finalArticle = article || (existing && existing.summary) || generateFallbackSummary(repo);
+      const source = article ? 'AI generated' : (existing && existing.summary) ? 'preserved' : 'fallback';
+      console.log(`  - Article: ${finalArticle.length} chars (${source})`);
 
       forks.push({
         id: repo.id,
@@ -399,7 +402,7 @@ async function main() {
         topics: detailed.topics || [],
         parent: detailed.parent || null,
         type: repo._type || 'fork',
-        image: getRandomUnsplashUrl(i),
+        image: (existing && existing.image) || getRandomUnsplashUrl(i),
         forkedAt: formatDate(repo.created_at),
         updatedAt: formatDate(repo.updated_at),
         readTime: estimateReadTime(finalArticle)
