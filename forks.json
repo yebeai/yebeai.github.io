@@ -1,14 +1,234 @@
 {
-  "lastUpdated": "2026-02-08T06:15:43.372Z",
+  "lastUpdated": "2026-02-08T12:06:00.355Z",
   "generatedWith": "GitHub Models API (GPT-4o, GPT-4o-mini, GPT-4.1)",
-  "totalRepos": 220,
+  "totalRepos": 229,
   "progress": {
-    "aiGenerated": 220,
+    "aiGenerated": 229,
     "fallback": 0,
     "pending": 0,
     "complete": true
   },
   "forks": [
+    {
+      "id": 1152043556,
+      "name": "VisionClaw",
+      "displayName": "VisionClaw",
+      "description": "Real-time AI assistant for Meta Ray-Ban smart glasses -- voice + vision + agentic actions via Gemini Live and OpenClaw",
+      "summary": "## The Problem\n\nVoice assistants suck at context. Siri or Alexa can't see what you're looking at, can't handle your shopping list, and definitely can't send a WhatsApp message while you're walking around. If you've ever wished your smart glasses could actually act smart, VisionClaw is the fix.\n\n## What This Does\n\nVisionClaw wires Meta Ray-Ban smart glasses to real-time AI via the Gemini Live API. The `samples/CameraAccess/CameraAccess.xcodeproj` is the iOS app—think camera stream + mic audio piped straight to Gemini, so the assistant knows what you see and hear. If you want actual actions (not just talking), plug in OpenClaw. That’s a local gateway (`openclaw.json` config) that exposes 56+ tools: messaging, web search, smart home, reminders.\n\nSetup is dead simple: clone, drop your Gemini API key into `GeminiConfig.swift`, and run. Want to test? Use your iPhone camera instead (no glasses needed). The pipeline is all here—audio, video, WebSocket to Gemini, and optional tool calls routed through OpenClaw.\n\n## Real-World Use\n\nSay you’re in the kitchen, wearing your Ray-Bans. You tap the AI button and mumble, “Add milk to my shopping list.” The camera snaps a frame, the mic grabs your voice, everything zips to Gemini Live. Gemini figures out you want to update your shopping list, triggers OpenClaw, which then hits your app (maybe Todoist or Apple Reminders). You get confirmation spoken back—no hands, no phone, just glasses.\n\nHere's the setup in code:\n\n```swift\n// samples/CameraAccess/CameraAccess/Gemini/GeminiConfig.swift\nstatic let apiKey = \"YOUR_GEMINI_API_KEY\"\n```\n\n## The Bottom Line\n\nVisionClaw finally makes smart glasses actually useful, as long as you’re comfortable fiddling with API keys and local gateways. The iOS app is straightforward, the OpenClaw integration is powerful but a bit much if you only want basic voice/vision. If you want real agentic AI—actions, not just answers—this is worth your time. If you’re just after “describe what I’m seeing,” stick with Gemini alone.",
+      "url": "https://github.com/yebeai/VisionClaw",
+      "language": null,
+      "stars": 0,
+      "forks": 0,
+      "topics": [],
+      "parent": {
+        "name": "sseanliu/VisionClaw",
+        "url": "https://github.com/sseanliu/VisionClaw",
+        "stars": 341
+      },
+      "type": "fork",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=400&fit=crop&q=80",
+      "forkedAt": "February 7, 2026",
+      "updatedAt": "February 8, 2026",
+      "readTime": 2
+    },
+    {
+      "id": 1152662479,
+      "name": "GraphGen",
+      "displayName": "GraphGen",
+      "description": "GraphGen: Enhancing Supervised Fine-Tuning for LLMs with Knowledge-Driven Synthetic Data Generation",
+      "summary": "# GraphGen: Synthesizing Data to Fix LLM Blind Spots\n\n## The Problem  \nLarge Language Models (LLMs) are only as good as their training data. The problem? Real-world datasets are messy, incomplete, or just plain biased. LLMs often fail at niche knowledge or long-tail tasks—things like domain-specific QA or weird edge cases in reasoning. Sourcing and cleaning new data to patch these gaps is expensive, slow, and tedious. Enter **GraphGen**, which promises to generate synthetic, high-value training data with a side of knowledge graphs and style control. Neat.\n\n## What This Does  \nGraphGen takes your raw text, builds a knowledge graph (think \"connect the dots\" for facts and relationships), and uses that graph to generate synthetic QA pairs. These aren't random trivia; they target **high-value knowledge gaps** in your LLM, identified through calibration error metrics. It's like handing your model a cheat sheet for the stuff it sucks at.\n\nThe repo structure is packed with features, but let me break it down. The magic starts in `baselines/`, where the `BDS` and `EntiGraph` modules handle baseline synthetic data generation. The `assets/flow.png` gives you an overview of how data flows through the pipeline. For deployment, the `Dockerfile` has you covered, and workflows like `.github/workflows/push-to-hf.yml` push your results to Hugging Face Spaces. The attention to automation is refreshing, even if the `.github` folder alone feels like overkill. (Do you really need six workflow configs for a repo with zero stars? I digress.)  \n\nPost-generation, you can fine-tune LLMs using tools like [LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory) or [xtuner](https://github.com/InternLM/xtuner). The workflow is laid out in the README, though it assumes you're already comfortable with training pipelines.  \n\n## Real-World Use  \nSay you're building a model to answer questions about botany, but your LLM keeps tripping over plant-specific terms. You'd feed your source texts into GraphGen, which builds a plant-specific knowledge graph and spits out QA pairs like:  \n- Q: What are the optimal growing conditions for a Venus flytrap?  \n- A: High humidity, bright indirect light, and nutrient-poor soil.  \n\nYou'd then take this synthetic data and mix it into your existing training set. Fine-tune your model, and boom—your LLM just graduated from \"plant clueless\" to \"botany nerd.\"\n\n## The Bottom Line  \nGraphGen is smart: it doesn’t just make more data—it makes *targeted* data. If you’re running serious fine-tuning for domain-specific LLMs, you’ll want to give this a try. That said, the setup assumes you’ve got some ML chops and a decent compute budget. For hobbyists or small projects, it’s overkill. For researchers and enterprise teams? This could be your secret weapon.",
+      "url": "https://github.com/yebeai/GraphGen",
+      "language": null,
+      "stars": 0,
+      "forks": 0,
+      "topics": [],
+      "parent": {
+        "name": "InternScience/GraphGen",
+        "url": "https://github.com/InternScience/GraphGen",
+        "stars": 878
+      },
+      "type": "fork",
+      "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop&q=80",
+      "forkedAt": "February 8, 2026",
+      "updatedAt": "February 8, 2026",
+      "readTime": 3
+    },
+    {
+      "id": 1152653913,
+      "name": "core",
+      "displayName": "core",
+      "description": "Build your digital brain which can talk to your AI apps.",
+      "summary": "## The Problem\nAI apps often forget context. Every chat feels like a reset, requiring you to re-explain your preferences or insights. You’ve got critical information scattered across different tools, and they don’t communicate. It’s frustrating—and it’s a productivity killer.\n\n## What This Does\nEnter CORE, your digital memory agent. It doesn’t just store data; it mimics human memory. The system organizes information into topics and associations, making it easier for you to retrieve what you need when you need it. Check out the file structure: the `apps/webapp/app/bullmq/queues/index.ts` manages job queues to handle memory requests, while `apps/webapp/app/bullmq/start-workers.ts` kicks off background processes to keep everything running smoothly. \n\nWant to integrate this into your workflow? The `.github/workflows/build-docker-image.yml` automates the Docker builds, so you can focus on building your app rather than worrying about deployment. \n\n## Real-World Use\nImagine you’re working on a project and need to recall a past decision that shaped your current approach. With CORE, you’d simply query the memory agent rather than scrolling through endless chat logs. For example, you could call a function like `retrieveMemory(topic)` to fetch relevant insights, allowing you to make informed decisions without the guesswork.\n\n## The Bottom Line\nCORE is ambitious—maybe too ambitious for small projects. If you're drowning in context-switching and need a way to retain crucial insights across various AI applications, give it a shot. Just be prepared to invest some time in setup and integration. For developers who manage complex workflows, this could be a lifesaver; for solo devs or small teams, it might feel like overkill.",
+      "url": "https://github.com/yebeai/core",
+      "language": null,
+      "stars": 0,
+      "forks": 0,
+      "topics": [],
+      "parent": {
+        "name": "RedPlanetHQ/core",
+        "url": "https://github.com/RedPlanetHQ/core",
+        "stars": 1313
+      },
+      "type": "fork",
+      "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop&q=80",
+      "forkedAt": "February 8, 2026",
+      "updatedAt": "February 8, 2026",
+      "readTime": 2
+    },
+    {
+      "id": 1152652352,
+      "name": "VoxCPM",
+      "displayName": "VoxCPM",
+      "description": "VoxCPM: Tokenizer-Free TTS for Context-Aware Speech Generation and True-to-Life Voice Cloning",
+      "summary": "## The Problem\n\nToken-based TTS models are stuck in their own little world—chopping up speech into discrete bits, losing all the nuance that makes a voice actually sound human. If you’ve ever tried to clone a voice and ended up with a robotic monotone or weird prosody, you know the pain. Context gets ignored, and \"zero-shot\" voice cloning is more like \"zero-personality\".\n\n## What This Does\n\n`VoxCPM` ditches tokenization entirely and goes full end-to-end, generating continuous speech representations straight from text. The guts of it live in `src/voxcpm/core.py` and the `model` subfolder, where diffusion autoregressive modeling and a MiniCPM-4 backbone do the heavy lifting. Configuration is handled by YAML files in `conf/voxcpm_v1.5/` and `conf/voxcpm_v1/`, letting you tweak fine-tuning setups (full-param or LoRA). Training, inference, and testing scripts are parked in `scripts/`, so you’re not left guessing how to run anything.\n\nVoice cloning is actually usable: throw in a short reference audio (see `examples/example.wav`), and it spits out speech that nails timbre, accent, emotion, and pacing. No more generic, flat outputs. And yes, it’s fast—RTF hovers around 0.15 on a 4090, so real-time apps aren’t a pipe dream.\n\n## Real-World Use\n\nSay you want to clone your CEO’s voice for an internal chatbot (for better or worse). Grab the latest weights, chuck a sample audio into `examples/`, and use `scripts/test_voxcpm_lora_infer.py` to run inference. Here’s a quick workflow:\n\n```python\n# Inference from CLI\n!voxcpm-cli --input_text \"Quarterly profits are up!\" --reference_audio examples/example.wav --output output.wav\n```\n\nNeed more control? Edit `conf/voxcpm_v1.5/voxcpm_finetune_lora.yaml` for LoRA fine-tuning, then run `scripts/train_voxcpm_finetune.py` with your own dataset (see `examples/train_data_example.jsonl` for format).\n\n## The Bottom Line\n\nVoxCPM finally makes TTS sound less like a robot reading Wikipedia. If you need context-aware, realistic voice cloning, and don’t mind fiddling with configs and scripts, this is worth your time. Overkill for tiny projects or simple IVRs, but if you care about vocal nuance—and have a GPU—it’s legit.",
+      "url": "https://github.com/yebeai/VoxCPM",
+      "language": null,
+      "stars": 0,
+      "forks": 0,
+      "topics": [],
+      "parent": {
+        "name": "OpenBMB/VoxCPM",
+        "url": "https://github.com/OpenBMB/VoxCPM",
+        "stars": 5787
+      },
+      "type": "fork",
+      "image": "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&h=400&fit=crop&q=80",
+      "forkedAt": "February 8, 2026",
+      "updatedAt": "February 8, 2026",
+      "readTime": 2
+    },
+    {
+      "id": 1152645089,
+      "name": "mlx-audio-swift",
+      "displayName": "mlx audio swift",
+      "description": "No description available",
+      "summary": "# MLX Audio Swift: Audio Processing with Apple Silicon and Swift\n\n## The Problem\n\nAudio processing with modern machine learning models is a mess on Apple platforms. Between clunky APIs, bloated frameworks, and the headache of integrating HuggingFace models, developers often waste hours just getting a basic TTS or STT workflow up and running. And if you’re targeting macOS or iOS, good luck finding something optimized for Apple Silicon.\n\n## What This Does\n\n`mlx-audio-swift` is a modular Swift SDK for working with audio models on Apple platforms. It’s broken into logical modules like `MLXAudioTTS` (Text-to-Speech) and `MLXAudioSTT` (Speech-to-Text), so you only import what you actually need. For instance, the `Sources/MLXAudioCodecs/DACVAE/DACVAE.swift` file houses a VAE-based audio codec implementation, while the `Examples/VoicesApp/Views` directory contains pre-built SwiftUI components for building apps like a voice manager.\n\nThe repo also includes a working demo app under `Examples/VoicesApp`, which is basically a playground for managing voices and testing out TTS. It's got everything from `TTSViewModel.swift` for business logic to `VoiceCollectionCard.swift` for UI components. The modularity here is no joke—add models directly from HuggingFace using something like `SopranoModel.fromPretrained()` and you're good to go.\n\n## Real-World Use\n\nLet’s say you’re building a macOS app that generates custom voiceovers. Using `MLXAudioTTS`, you can pull a model from HuggingFace, generate audio, and save it locally in just a few lines:\n\n```swift\nlet model = try await SopranoModel.fromPretrained(\"mlx-community/Soprano-80M-bf16\")\nlet audio = try await model.generate(text: \"Hello from MLX Audio Swift!\")\ntry saveAudioArray(audio, sampleRate: Double(model.sampleRate), to: outputURL)\n```\n\nWant to transcribe audio instead? Import `MLXAudioSTT`, load your audio file with `loadAudioArray`, and let the `GLMASRModel` do its thing. You can even stream generation if you’re working on a real-time TTS/chat app.\n\n## The Bottom Line\n\n`mlx-audio-swift` is a sharp tool, but like all sharp tools, it’s not for everyone. If you're building a quick-and-dirty app or don’t care about Apple Silicon performance, this might be overkill. But if you’re in the business of high-quality, ML-powered audio on macOS or iOS, this is worth a serious look. Just be ready to dig into the docs—this is a library for developers, not a plug-and-play solution.",
+      "url": "https://github.com/yebeai/mlx-audio-swift",
+      "language": null,
+      "stars": 0,
+      "forks": 0,
+      "topics": [],
+      "parent": {
+        "name": "Blaizzy/mlx-audio-swift",
+        "url": "https://github.com/Blaizzy/mlx-audio-swift",
+        "stars": 103
+      },
+      "type": "fork",
+      "image": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&h=400&fit=crop&q=80",
+      "forkedAt": "February 8, 2026",
+      "updatedAt": "February 8, 2026",
+      "readTime": 2
+    },
+    {
+      "id": 1152642040,
+      "name": "agents",
+      "displayName": "agents",
+      "description": "Trade autonomously on Polymarket using AI Agents",
+      "summary": "## The Problem\nTrading on Polymarket can feel like navigating a minefield, especially if you're doing it manually. Keeping track of market fluctuations, executing trades, and analyzing data can be overwhelming. Let’s face it: most of us have better things to do than refresh a browser all day, hoping to catch the perfect moment to place a bet.\n\n## What This Does\nThe `agents` repo is your ticket to autonomous trading on Polymarket using AI agents. It integrates with the Polymarket API and provides a set of utilities to create your own trading agents. Check out files like `agents/application/trade.py` to see how you can execute trades, or `agents/polymarket/polymarket.py` for methods to interact with market data. You can set up your environment with a `.env` file to securely manage your API keys, allowing your agent to access the necessary data without hardcoding sensitive info.\n\nThe structure supports modular development. For example, the `agents/connectors/chroma.py` file lets you implement your own vector database for data sourcing. This means you can customize how your agent pulls in relevant information—be it from news articles or social media—tailoring it to your specific trading strategy.\n\n## Real-World Use\nImagine you want to bet on an upcoming election. You could fire up `python agents/application/trade.py` and let your AI agent analyze real-time news and market sentiment. With the right setup, your agent can automatically place bets based on predefined conditions, reducing the manual workload and potentially increasing your profits. Want to see how your agent is performing? Use the command line interface with `python scripts/python/cli.py` to monitor its actions.\n\n## The Bottom Line\nThis repo is a solid starting point for anyone looking to automate trading on Polymarket. However, it's not for the faint of heart—setting up your environment requires some familiarity with Python and Docker. If you're a developer who enjoys building tools and has a penchant for betting markets, this could save you time and effort. But if you're just dabbling, it might feel like overkill.",
+      "url": "https://github.com/yebeai/agents",
+      "language": null,
+      "stars": 0,
+      "forks": 0,
+      "topics": [],
+      "parent": {
+        "name": "Polymarket/agents",
+        "url": "https://github.com/Polymarket/agents",
+        "stars": 2065
+      },
+      "type": "fork",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop&q=80",
+      "forkedAt": "February 8, 2026",
+      "updatedAt": "February 8, 2026",
+      "readTime": 2
+    },
+    {
+      "id": 1152633202,
+      "name": "BubbleLab",
+      "displayName": "BubbleLab",
+      "description": "Open source workflow automation platform built for developers - full observability and code exportability!",
+      "summary": "## The Problem\nYou know those no-code workflow tools (like n8n) that churn out ugly JSON and trap your logic inside a black box? You can't debug, version, or run anything outside their walled garden. If you're a developer and want to own your automation, you're out of luck.\n\n## What This Does\nBubbleLab flips the script: you visually build workflows, but everything compiles down to TypeScript you actually control. The repo has a studio app (`apps/bubble-studio`) where you can edit flows and test them. Observability is baked in—think logs, token/cost tracking, and full execution tracing (not the usual \"something went wrong, good luck\"). If you want to use AI ops, Pearl (the assistant) sits in `.claude/skills/`, generating and amending workflows for you. The platform exports as real code, not proprietary junk, so you can plug workflows straight into your codebase or CI.\n\n## Real-World Use\nSay you want to scrape Reddit and push new posts to Slack. You fire up BubbleLab, use the `reddit-scraper` template, and get a clean TypeScript file like this:\n```ts\nimport { fetchRedditPosts, sendToSlack } from 'bubblelab-integrations';\n\nexport const redditNewsFlow = async () => {\n  const posts = await fetchRedditPosts('news');\n  for (const post of posts) {\n    await sendToSlack(post.title, post.url);\n  }\n};\n```\nYou can run this in Node, debug with real logs, and tweak every line. No magic hidden nodes, no vendor lock-in.\n\n## The Bottom Line\nBubbleLab is for devs who hate being boxed in. If you want visual workflow editing but also demand transparency and exportability, this is worth a look. Setup is a bit rough (bring your own API keys), and it's probably overkill for tiny scripts, but if you're sick of fighting proprietary tools, grab it and own your automation.",
+      "url": "https://github.com/yebeai/BubbleLab",
+      "language": null,
+      "stars": 0,
+      "forks": 0,
+      "topics": [],
+      "parent": {
+        "name": "bubblelabai/BubbleLab",
+        "url": "https://github.com/bubblelabai/BubbleLab",
+        "stars": 1035
+      },
+      "type": "fork",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=400&fit=crop&q=80",
+      "forkedAt": "February 8, 2026",
+      "updatedAt": "February 8, 2026",
+      "readTime": 2
+    },
+    {
+      "id": 1152628911,
+      "name": "quint-code",
+      "displayName": "quint code",
+      "description": "Structured reasoning framework for Claude Code, Gemini, Cursor, and Codex — hypothesis-driven decision making with auditable evidence trails",
+      "summary": "# Structured Reasoning for AI Coding Tools: A Look at `quint-code`\n\n## The Problem\n\nAI-assisted coding tools are great until they're not. You ask a question, get a decent answer, and then... forget why you made a decision two days later. Or worse, you’re left digging through an endless chat history trying to retrace your steps. AI feels like a black box, and decisions vanish into the void. \n\n## What This Does\n\n`quint-code` forces both you and your AI to think clearly and document everything along the way. Using the **First Principles Framework (FPF)**, it turns AI-assisted problem-solving into a structured process: **generate hypotheses**, **verify logic**, **test with evidence**, and **document the lot** in a `.quint/` directory that lives in your repo. It's auditable, queryable, and—most importantly—yours.\n\nThe tool is built for AI coding assistants like Claude Code, Codex, Gemini, and Cursor. It hooks into these tools via commands you can initialize using `quint-code init`. For example, you get slash commands like `/q1-hypothesize` to generate ideas or `/q2-verify` to check logical constraints. These commands live in `.claude/commands/*.md` or their equivalents for other tools, and you can customize the setup with flags like `--cursor` or `--codex`.\n\nUnder the hood, the `src/mcp` folder houses the core logic, including an assurance engine (`calculator.go`) that handles evidence evaluation, and several commands defined in Markdown (`q-hypothesize.md`, `q-verify.md`, etc.) for extensibility.\n\n## Real-World Use\n\nSay you're building a CI/CD pipeline and need to decide between self-hosted runners or a managed service. You can start with `/q1-hypothesize` to generate ideas, then refine them with `/q2-verify` to check constraints like cost and security. Finally, use `/q3-test` to gather evidence (e.g., benchmarks, team feedback). All decisions and their rationale are saved in `.quint/`, so you don't have to remember why you ruled out \"option #2\" three months later.\n\nThe `docs/workflow_example/cicd-strategy.md` file has a detailed walkthrough of this exact scenario. Or just hack into it yourself—the examples are nice, but it's faster to try it out.\n\n## The Bottom Line\n\n`quint-code` is like having an AI-powered project manager that documents everything. For large, complex projects with multiple AIs and stakeholders, it’s a no-brainer. For small, one-off tasks? Probably overkill. But if you've ever uttered the words, \"Why did we decide this again?\"—install it.",
+      "url": "https://github.com/yebeai/quint-code",
+      "language": null,
+      "stars": 0,
+      "forks": 0,
+      "topics": [],
+      "parent": {
+        "name": "m0n0x41d/quint-code",
+        "url": "https://github.com/m0n0x41d/quint-code",
+        "stars": 1133
+      },
+      "type": "fork",
+      "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&h=400&fit=crop&q=80",
+      "forkedAt": "February 8, 2026",
+      "updatedAt": "February 8, 2026",
+      "readTime": 2
+    },
+    {
+      "id": 1152625843,
+      "name": "rotki",
+      "displayName": "rotki",
+      "description": "A portfolio tracking, analytics, accounting and management application that protects your privacy",
+      "summary": "## The Problem\nManaging cryptocurrency portfolios can feel like herding cats. You’ve got wallets, exchanges, and blockchains, all spitting out data in different formats. Most tools out there are closed-source SaaS platforms where you’re basically handing over your wallet keys to a stranger. rotki aims to tackle this privacy disaster by letting you keep your data local and encrypted.\n\n## What This Does\nrotki is an open-source, self-hosted portfolio manager that puts privacy first. You can track your balances across multiple platforms and exchanges without worrying about someone else snooping through your financials. The project structure is set up for easy development and contribution. For example, the `.github/workflows` directory contains multiple CI/CD workflows like `rotki_ci.yml` for continuous integration and `rotki_docker_publish.yaml` for pushing Docker images. These workflows automate testing and deployment, so you don’t have to manually babysit your code.\n\nThe `README.md` does a decent job laying out the features, like transaction decoding and graphical insights. The `AGENTS.md` file even provides details on how to set up your environment, which is a nice touch for those new to the project.\n\n## Real-World Use\nImagine you’re a crypto trader who wants to analyze your performance over the past year. With rotki, you can set it up on your own machine, connect it to your wallets, and let it gather data. You can dive into detailed profit and loss reports, customize your UI, and visualize historical data with just a few clicks. If you want to tweak settings, just edit the `.pylint.rc` file for Python linting or the `.bumpversion.cfg` for versioning—no need to dig through endless menus.\n\n## The Bottom Line\nrotki is a solid choice for privacy-conscious users who want to manage their crypto portfolios without giving up control. It's not the most beginner-friendly option, and the self-hosting requirement can be a pain if you're not technically inclined. If you’re serious about keeping your financial data secure, though, rotki is worth a look—just don’t expect it to hold your hand.",
+      "url": "https://github.com/yebeai/rotki",
+      "language": null,
+      "stars": 0,
+      "forks": 0,
+      "topics": [],
+      "parent": {
+        "name": "rotki/rotki",
+        "url": "https://github.com/rotki/rotki",
+        "stars": 3686
+      },
+      "type": "fork",
+      "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop&q=80",
+      "forkedAt": "February 8, 2026",
+      "updatedAt": "February 8, 2026",
+      "readTime": 2
+    },
+    {
+      "id": 1152624453,
+      "name": "openagi",
+      "displayName": "openagi",
+      "description": "Paving the way for open agents and AGI for all.",
+      "summary": "## The Problem\n\nBuilding autonomous agents that actually do useful stuff is a pain. Most DIY agent frameworks are either half-baked, require gluing together a mess of APIs, or they assume you want to run everything through OpenAI like it's the only option. If you want something modular, hackable, and not stuck in someone's closed ecosystem, good luck.\n\n## What This Does\n\n`openagi` gives you a Python toolkit for making \"human-like\" agents. It's got a bunch of ready-to-use chunks: `openagi.agent.Admin` to wrangle multiple agents, `openagi.planner.task_decomposer.TaskPlanner` for breaking up tasks, and actions like `openagi.actions.tools.ddg_search.DuckDuckGoSearch` for web scraping. You wire it up in a few lines—no 2000-line YAML configs or 14 microservices. The code lives in plain Python files, so you can actually read it. If you want to see how an agent works, you just look at the example in the README or poke at the `openagi/worker.py` file.\n\n## Real-World Use\n\nSay you want a trip planner bot. You set up your LLM (OpenAI or Gemini), slap on a search action, and plug it into a `Worker` with some instructions. Then, use `Admin` to run it against a user query, like \"Give me total 3 Days Trip to San francisco Bay area\". The agent will break down the task, search the web, and spit out an itinerary. If you want to get fancy, make it fully autonomous, drop the workers, and have it hunt down cricket scores or whatever. It's dead simple, and the example code actually works without hunting through docs.\n\n## The Bottom Line\n\n`openagi` is for devs who want to build multi-agent LLM bots without drowning in abstraction hell. The parts are modular, the examples are clear, and you don't need a PhD in prompt engineering. If you need something production-grade or super customizable, you'll hit limits fast—but for prototyping and hacking, it's solid.",
+      "url": "https://github.com/yebeai/openagi",
+      "language": null,
+      "stars": 0,
+      "forks": 0,
+      "topics": [],
+      "parent": {
+        "name": "aiplanethub/openagi",
+        "url": "https://github.com/aiplanethub/openagi",
+        "stars": 535
+      },
+      "type": "fork",
+      "image": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=400&fit=crop&q=80",
+      "forkedAt": "February 8, 2026",
+      "updatedAt": "February 8, 2026",
+      "readTime": 2
+    },
     {
       "id": 1152364673,
       "name": "echolon",
@@ -23,7 +243,7 @@
       "parent": {
         "name": "echolon-app/echolon",
         "url": "https://github.com/echolon-app/echolon",
-        "stars": 23
+        "stars": 25
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop&q=80",
@@ -45,7 +265,7 @@
       "parent": {
         "name": "hrishioa/lumentis",
         "url": "https://github.com/hrishioa/lumentis",
-        "stars": 1691
+        "stars": 1692
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop&q=80",
@@ -67,7 +287,7 @@
       "parent": {
         "name": "batrachianai/toad",
         "url": "https://github.com/batrachianai/toad",
-        "stars": 2123
+        "stars": 2127
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&h=400&fit=crop&q=80",
@@ -89,7 +309,7 @@
       "parent": {
         "name": "virattt/dexter",
         "url": "https://github.com/virattt/dexter",
-        "stars": 11802
+        "stars": 12054
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&h=400&fit=crop&q=80",
@@ -111,7 +331,7 @@
       "parent": {
         "name": "miantiao-me/awesome-homelab",
         "url": "https://github.com/miantiao-me/awesome-homelab",
-        "stars": 1652
+        "stars": 1654
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop&q=80",
@@ -155,7 +375,7 @@
       "parent": {
         "name": "yoheinakajima/babyagi3",
         "url": "https://github.com/yoheinakajima/babyagi3",
-        "stars": 60
+        "stars": 70
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop&q=80",
@@ -177,7 +397,7 @@
       "parent": {
         "name": "madnanrizqu/vibe-cv-resume",
         "url": "https://github.com/madnanrizqu/vibe-cv-resume",
-        "stars": 21
+        "stars": 26
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&h=400&fit=crop&q=80",
@@ -221,32 +441,10 @@
       "parent": {
         "name": "Beingpax/VoiceInk",
         "url": "https://github.com/Beingpax/VoiceInk",
-        "stars": 3621
+        "stars": 3628
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop&q=80",
-      "forkedAt": "February 7, 2026",
-      "updatedAt": "February 7, 2026",
-      "readTime": 2
-    },
-    {
-      "id": 1152043556,
-      "name": "VisionClaw",
-      "displayName": "VisionClaw",
-      "description": "Real-time AI assistant for Meta Ray-Ban smart glasses -- voice + vision + agentic actions via Gemini Live and OpenClaw",
-      "summary": "## The Problem\n\nVoice assistants suck at context. Siri or Alexa can't see what you're looking at, can't handle your shopping list, and definitely can't send a WhatsApp message while you're walking around. If you've ever wished your smart glasses could actually act smart, VisionClaw is the fix.\n\n## What This Does\n\nVisionClaw wires Meta Ray-Ban smart glasses to real-time AI via the Gemini Live API. The `samples/CameraAccess/CameraAccess.xcodeproj` is the iOS app—think camera stream + mic audio piped straight to Gemini, so the assistant knows what you see and hear. If you want actual actions (not just talking), plug in OpenClaw. That’s a local gateway (`openclaw.json` config) that exposes 56+ tools: messaging, web search, smart home, reminders.\n\nSetup is dead simple: clone, drop your Gemini API key into `GeminiConfig.swift`, and run. Want to test? Use your iPhone camera instead (no glasses needed). The pipeline is all here—audio, video, WebSocket to Gemini, and optional tool calls routed through OpenClaw.\n\n## Real-World Use\n\nSay you’re in the kitchen, wearing your Ray-Bans. You tap the AI button and mumble, “Add milk to my shopping list.” The camera snaps a frame, the mic grabs your voice, everything zips to Gemini Live. Gemini figures out you want to update your shopping list, triggers OpenClaw, which then hits your app (maybe Todoist or Apple Reminders). You get confirmation spoken back—no hands, no phone, just glasses.\n\nHere's the setup in code:\n\n```swift\n// samples/CameraAccess/CameraAccess/Gemini/GeminiConfig.swift\nstatic let apiKey = \"YOUR_GEMINI_API_KEY\"\n```\n\n## The Bottom Line\n\nVisionClaw finally makes smart glasses actually useful, as long as you’re comfortable fiddling with API keys and local gateways. The iOS app is straightforward, the OpenClaw integration is powerful but a bit much if you only want basic voice/vision. If you want real agentic AI—actions, not just answers—this is worth your time. If you’re just after “describe what I’m seeing,” stick with Gemini alone.",
-      "url": "https://github.com/yebeai/VisionClaw",
-      "language": null,
-      "stars": 0,
-      "forks": 0,
-      "topics": [],
-      "parent": {
-        "name": "sseanliu/VisionClaw",
-        "url": "https://github.com/sseanliu/VisionClaw",
-        "stars": 277
-      },
-      "type": "fork",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=400&fit=crop&q=80",
       "forkedAt": "February 7, 2026",
       "updatedAt": "February 7, 2026",
       "readTime": 2
@@ -287,7 +485,7 @@
       "parent": {
         "name": "Hawksight-AI/semantica",
         "url": "https://github.com/Hawksight-AI/semantica",
-        "stars": 652
+        "stars": 657
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop&q=80",
@@ -331,7 +529,7 @@
       "parent": {
         "name": "Shubhamsaboo/awesome-llm-apps",
         "url": "https://github.com/Shubhamsaboo/awesome-llm-apps",
-        "stars": 92686
+        "stars": 92756
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop&q=80",
@@ -353,7 +551,7 @@
       "parent": {
         "name": "tinyfish-io/agentql",
         "url": "https://github.com/tinyfish-io/agentql",
-        "stars": 1207
+        "stars": 1208
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop&q=80",
@@ -375,7 +573,7 @@
       "parent": {
         "name": "microsoft/call-center-ai",
         "url": "https://github.com/microsoft/call-center-ai",
-        "stars": 6234
+        "stars": 6235
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&h=400&fit=crop&q=80",
@@ -419,7 +617,7 @@
       "parent": {
         "name": "rahulnyk/knowledge_graph",
         "url": "https://github.com/rahulnyk/knowledge_graph",
-        "stars": 2498
+        "stars": 2554
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop&q=80",
@@ -441,7 +639,7 @@
       "parent": {
         "name": "kizuna-ai-lab/sokuji",
         "url": "https://github.com/kizuna-ai-lab/sokuji",
-        "stars": 825
+        "stars": 826
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop&q=80",
@@ -463,7 +661,7 @@
       "parent": {
         "name": "antirez/voxtral.c",
         "url": "https://github.com/antirez/voxtral.c",
-        "stars": 369
+        "stars": 412
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop&q=80",
@@ -485,7 +683,7 @@
       "parent": {
         "name": "allmonday/fastapi-voyager",
         "url": "https://github.com/allmonday/fastapi-voyager",
-        "stars": 426
+        "stars": 427
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop&q=80",
@@ -507,7 +705,7 @@
       "parent": {
         "name": "lukilabs/beautiful-mermaid",
         "url": "https://github.com/lukilabs/beautiful-mermaid",
-        "stars": 6648
+        "stars": 6668
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop&q=80",
@@ -529,7 +727,7 @@
       "parent": {
         "name": "agno-agi/dash",
         "url": "https://github.com/agno-agi/dash",
-        "stars": 1429
+        "stars": 1439
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop&q=80",
@@ -551,7 +749,7 @@
       "parent": {
         "name": "github/gh-aw",
         "url": "https://github.com/github/gh-aw",
-        "stars": 390
+        "stars": 394
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop&q=80",
@@ -591,7 +789,7 @@
       "parent": {
         "name": "abhinavxd/libredesk",
         "url": "https://github.com/abhinavxd/libredesk",
-        "stars": 2286
+        "stars": 2287
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&h=400&fit=crop&q=80",
@@ -635,7 +833,7 @@
       "parent": {
         "name": "4ian/GDevelop",
         "url": "https://github.com/4ian/GDevelop",
-        "stars": 20253
+        "stars": 20263
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=400&fit=crop&q=80",
@@ -657,7 +855,7 @@
       "parent": {
         "name": "slidevjs/slidev",
         "url": "https://github.com/slidevjs/slidev",
-        "stars": 44222
+        "stars": 44225
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&h=400&fit=crop&q=80",
@@ -701,7 +899,7 @@
       "parent": {
         "name": "callstackincubator/agent-device",
         "url": "https://github.com/callstackincubator/agent-device",
-        "stars": 481
+        "stars": 485
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=400&fit=crop&q=80",
@@ -767,7 +965,7 @@
       "parent": {
         "name": "winfunc/opcode",
         "url": "https://github.com/winfunc/opcode",
-        "stars": 20462
+        "stars": 20464
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?w=800&h=400&fit=crop&q=80",
@@ -789,7 +987,7 @@
       "parent": {
         "name": "fastrepl/hyprnote",
         "url": "https://github.com/fastrepl/hyprnote",
-        "stars": 7668
+        "stars": 7669
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop&q=80",
@@ -855,7 +1053,7 @@
       "parent": {
         "name": "timoncool/videosos",
         "url": "https://github.com/timoncool/videosos",
-        "stars": 1028
+        "stars": 1041
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop&q=80",
@@ -899,7 +1097,7 @@
       "parent": {
         "name": "ar51an/unbound-dashboard",
         "url": "https://github.com/ar51an/unbound-dashboard",
-        "stars": 589
+        "stars": 592
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=400&fit=crop&q=80",
@@ -921,7 +1119,7 @@
       "parent": {
         "name": "agentic-mcp-tools/memora",
         "url": "https://github.com/agentic-mcp-tools/memora",
-        "stars": 257
+        "stars": 259
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&h=400&fit=crop&q=80",
@@ -965,7 +1163,7 @@
       "parent": {
         "name": "TauricResearch/TradingAgents",
         "url": "https://github.com/TauricResearch/TradingAgents",
-        "stars": 29466
+        "stars": 29481
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=400&fit=crop&q=80",
@@ -987,7 +1185,7 @@
       "parent": {
         "name": "0xSojalSec/airllm",
         "url": "https://github.com/0xSojalSec/airllm",
-        "stars": 2589
+        "stars": 2590
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&h=400&fit=crop&q=80",
@@ -1075,7 +1273,7 @@
       "parent": {
         "name": "anvaka/city-roads",
         "url": "https://github.com/anvaka/city-roads",
-        "stars": 8897
+        "stars": 8899
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop&q=80",
@@ -1119,7 +1317,7 @@
       "parent": {
         "name": "poloclub/transformer-explainer",
         "url": "https://github.com/poloclub/transformer-explainer",
-        "stars": 6614
+        "stars": 6643
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&h=400&fit=crop&q=80",
@@ -1229,7 +1427,7 @@
       "parent": {
         "name": "reconurge/flowsint",
         "url": "https://github.com/reconurge/flowsint",
-        "stars": 2527
+        "stars": 2530
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=400&fit=crop&q=80",
@@ -1317,7 +1515,7 @@
       "parent": {
         "name": "xenodium/agent-shell",
         "url": "https://github.com/xenodium/agent-shell",
-        "stars": 656
+        "stars": 657
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop&q=80",
@@ -1339,7 +1537,7 @@
       "parent": {
         "name": "openclaw/openclaw",
         "url": "https://github.com/openclaw/openclaw",
-        "stars": 174520
+        "stars": 175204
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop&q=80",
@@ -1383,7 +1581,7 @@
       "parent": {
         "name": "microsoft/agent-lightning",
         "url": "https://github.com/microsoft/agent-lightning",
-        "stars": 14252
+        "stars": 14266
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=400&fit=crop&q=80",
@@ -1471,7 +1669,7 @@
       "parent": {
         "name": "GetStream/Vision-Agents",
         "url": "https://github.com/GetStream/Vision-Agents",
-        "stars": 4942
+        "stars": 4966
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop&q=80",
@@ -1493,7 +1691,7 @@
       "parent": {
         "name": "numman-ali/openskills",
         "url": "https://github.com/numman-ali/openskills",
-        "stars": 8014
+        "stars": 8019
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop&q=80",
@@ -1537,7 +1735,7 @@
       "parent": {
         "name": "going-doer/Paper2Code",
         "url": "https://github.com/going-doer/Paper2Code",
-        "stars": 4123
+        "stars": 4124
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&h=400&fit=crop&q=80",
@@ -1559,7 +1757,7 @@
       "parent": {
         "name": "Orchestra-Research/AI-Research-SKILLs",
         "url": "https://github.com/Orchestra-Research/AI-Research-SKILLs",
-        "stars": 2534
+        "stars": 2552
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?w=800&h=400&fit=crop&q=80",
@@ -1581,7 +1779,7 @@
       "parent": {
         "name": "microsoft/BitNet",
         "url": "https://github.com/microsoft/BitNet",
-        "stars": 28053
+        "stars": 28092
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop&q=80",
@@ -1603,7 +1801,7 @@
       "parent": {
         "name": "droidrun/droidrun",
         "url": "https://github.com/droidrun/droidrun",
-        "stars": 7620
+        "stars": 7624
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop&q=80",
@@ -1625,7 +1823,7 @@
       "parent": {
         "name": "clidey/whodb",
         "url": "https://github.com/clidey/whodb",
-        "stars": 4547
+        "stars": 4548
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=800&h=400&fit=crop&q=80",
@@ -1647,7 +1845,7 @@
       "parent": {
         "name": "open-webui/open-webui",
         "url": "https://github.com/open-webui/open-webui",
-        "stars": 123255
+        "stars": 123273
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&h=400&fit=crop&q=80",
@@ -1669,7 +1867,7 @@
       "parent": {
         "name": "forrestchang/andrej-karpathy-skills",
         "url": "https://github.com/forrestchang/andrej-karpathy-skills",
-        "stars": 3669
+        "stars": 3673
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop&q=80",
@@ -1713,7 +1911,7 @@
       "parent": {
         "name": "AnmolSaini16/mapcn",
         "url": "https://github.com/AnmolSaini16/mapcn",
-        "stars": 5619
+        "stars": 5628
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&h=400&fit=crop&q=80",
@@ -1757,7 +1955,7 @@
       "parent": {
         "name": "zampierilucas/scx_horoscope",
         "url": "https://github.com/zampierilucas/scx_horoscope",
-        "stars": 1096
+        "stars": 1097
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=400&fit=crop&q=80",
@@ -1779,7 +1977,7 @@
       "parent": {
         "name": "unicodeveloper/globalthreatmap",
         "url": "https://github.com/unicodeveloper/globalthreatmap",
-        "stars": 1128
+        "stars": 1133
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&h=400&fit=crop&q=80",
@@ -1823,7 +2021,7 @@
       "parent": {
         "name": "firecrawl/open-lovable",
         "url": "https://github.com/firecrawl/open-lovable",
-        "stars": 23945
+        "stars": 23948
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&h=400&fit=crop&q=80",
@@ -1845,7 +2043,7 @@
       "parent": {
         "name": "EuniAI/Prometheus",
         "url": "https://github.com/EuniAI/Prometheus",
-        "stars": 648
+        "stars": 650
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop&q=80",
@@ -1955,7 +2153,7 @@
       "parent": {
         "name": "AmineDjeghri/awesome-os-setup",
         "url": "https://github.com/AmineDjeghri/awesome-os-setup",
-        "stars": 512
+        "stars": 513
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&h=400&fit=crop&q=80",
@@ -1977,7 +2175,7 @@
       "parent": {
         "name": "lalitgehani/SnackBase",
         "url": "https://github.com/lalitgehani/SnackBase",
-        "stars": 118
+        "stars": 119
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&h=400&fit=crop&q=80",
@@ -1999,7 +2197,7 @@
       "parent": {
         "name": "drawdb-io/drawdb",
         "url": "https://github.com/drawdb-io/drawdb",
-        "stars": 35862
+        "stars": 35865
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop&q=80",
@@ -2065,7 +2263,7 @@
       "parent": {
         "name": "aiming-lab/SimpleMem",
         "url": "https://github.com/aiming-lab/SimpleMem",
-        "stars": 2734
+        "stars": 2736
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=800&h=400&fit=crop&q=80",
@@ -2109,7 +2307,7 @@
       "parent": {
         "name": "antirez/flux2.c",
         "url": "https://github.com/antirez/flux2.c",
-        "stars": 1715
+        "stars": 1719
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop&q=80",
@@ -2153,7 +2351,7 @@
       "parent": {
         "name": "freelensapp/freelens",
         "url": "https://github.com/freelensapp/freelens",
-        "stars": 4567
+        "stars": 4568
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=400&fit=crop&q=80",
@@ -2175,7 +2373,7 @@
       "parent": {
         "name": "tonyantony300/alt-sendme",
         "url": "https://github.com/tonyantony300/alt-sendme",
-        "stars": 5314
+        "stars": 5318
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&h=400&fit=crop&q=80",
@@ -2241,7 +2439,7 @@
       "parent": {
         "name": "x1xhlol/system-prompts-and-models-of-ai-tools",
         "url": "https://github.com/x1xhlol/system-prompts-and-models-of-ai-tools",
-        "stars": 113690
+        "stars": 113724
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?w=800&h=400&fit=crop&q=80",
@@ -2307,7 +2505,7 @@
       "parent": {
         "name": "IndAlok/rzweb",
         "url": "https://github.com/IndAlok/rzweb",
-        "stars": 583
+        "stars": 584
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=400&fit=crop&q=80",
@@ -2329,7 +2527,7 @@
       "parent": {
         "name": "xai-org/xai-sdk-python",
         "url": "https://github.com/xai-org/xai-sdk-python",
-        "stars": 350
+        "stars": 351
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&h=400&fit=crop&q=80",
@@ -2351,7 +2549,7 @@
       "parent": {
         "name": "xai-org/x-algorithm",
         "url": "https://github.com/xai-org/x-algorithm",
-        "stars": 15089
+        "stars": 15105
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop&q=80",
@@ -2395,7 +2593,7 @@
       "parent": {
         "name": "originalankur/maptoposter",
         "url": "https://github.com/originalankur/maptoposter",
-        "stars": 9914
+        "stars": 9959
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&h=400&fit=crop&q=80",
@@ -2417,7 +2615,7 @@
       "parent": {
         "name": "nautechsystems/nautilus_trader",
         "url": "https://github.com/nautechsystems/nautilus_trader",
-        "stars": 18864
+        "stars": 18869
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop&q=80",
@@ -2505,7 +2703,7 @@
       "parent": {
         "name": "danielmiessler/Personal_AI_Infrastructure",
         "url": "https://github.com/danielmiessler/Personal_AI_Infrastructure",
-        "stars": 6290
+        "stars": 6294
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=400&fit=crop&q=80",
@@ -2549,7 +2747,7 @@
       "parent": {
         "name": "Liquid4All/cookbook",
         "url": "https://github.com/Liquid4All/cookbook",
-        "stars": 1101
+        "stars": 1103
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop&q=80",
@@ -2725,7 +2923,7 @@
       "parent": {
         "name": "github/copilot-sdk",
         "url": "https://github.com/github/copilot-sdk",
-        "stars": 6885
+        "stars": 6893
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&h=400&fit=crop&q=80",
@@ -2747,7 +2945,7 @@
       "parent": {
         "name": "xai-org/grok-1",
         "url": "https://github.com/xai-org/grok-1",
-        "stars": 51471
+        "stars": 51470
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop&q=80",
@@ -2791,7 +2989,7 @@
       "parent": {
         "name": "toon-format/toon",
         "url": "https://github.com/toon-format/toon",
-        "stars": 22529
+        "stars": 22534
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&h=400&fit=crop&q=80",
@@ -2901,7 +3099,7 @@
       "parent": {
         "name": "Ramakm/AI-ML-Book-References",
         "url": "https://github.com/Ramakm/AI-ML-Book-References",
-        "stars": 318
+        "stars": 319
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop&q=80",
@@ -2923,7 +3121,7 @@
       "parent": {
         "name": "apify/crawlee",
         "url": "https://github.com/apify/crawlee",
-        "stars": 21594
+        "stars": 21598
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=400&fit=crop&q=80",
@@ -3011,7 +3209,7 @@
       "parent": {
         "name": "hanebox/ekphos",
         "url": "https://github.com/hanebox/ekphos",
-        "stars": 795
+        "stars": 796
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop&q=80",
@@ -3033,7 +3231,7 @@
       "parent": {
         "name": "TradeMaster-NTU/TradeMaster",
         "url": "https://github.com/TradeMaster-NTU/TradeMaster",
-        "stars": 2470
+        "stars": 2471
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop&q=80",
@@ -3055,7 +3253,7 @@
       "parent": {
         "name": "HeyPuter/puter",
         "url": "https://github.com/HeyPuter/puter",
-        "stars": 39313
+        "stars": 39321
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&h=400&fit=crop&q=80",
@@ -3253,7 +3451,7 @@
       "parent": {
         "name": "memodb-io/Acontext",
         "url": "https://github.com/memodb-io/Acontext",
-        "stars": 2889
+        "stars": 2892
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?w=800&h=400&fit=crop&q=80",
@@ -3275,7 +3473,7 @@
       "parent": {
         "name": "microsoft/vscode",
         "url": "https://github.com/microsoft/vscode",
-        "stars": 181508
+        "stars": 181512
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop&q=80",
@@ -3297,7 +3495,7 @@
       "parent": {
         "name": "vercel-labs/json-render",
         "url": "https://github.com/vercel-labs/json-render",
-        "stars": 10099
+        "stars": 10106
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop&q=80",
@@ -3319,7 +3517,7 @@
       "parent": {
         "name": "krypton-byte/neonize",
         "url": "https://github.com/krypton-byte/neonize",
-        "stars": 316
+        "stars": 317
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&h=400&fit=crop&q=80",
@@ -3341,7 +3539,7 @@
       "parent": {
         "name": "eigent-ai/eigent",
         "url": "https://github.com/eigent-ai/eigent",
-        "stars": 12106
+        "stars": 12120
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&h=400&fit=crop&q=80",
@@ -3495,7 +3693,7 @@
       "parent": {
         "name": "robert-mcdermott/ai-knowledge-graph",
         "url": "https://github.com/robert-mcdermott/ai-knowledge-graph",
-        "stars": 1872
+        "stars": 1873
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=800&h=400&fit=crop&q=80",
@@ -3517,7 +3715,7 @@
       "parent": {
         "name": "midday-ai/midday",
         "url": "https://github.com/midday-ai/midday",
-        "stars": 13660
+        "stars": 13662
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?w=800&h=400&fit=crop&q=80",
@@ -3583,7 +3781,7 @@
       "parent": {
         "name": "pocketbase/pocketbase",
         "url": "https://github.com/pocketbase/pocketbase",
-        "stars": 55948
+        "stars": 55951
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&h=400&fit=crop&q=80",
@@ -3605,7 +3803,7 @@
       "parent": {
         "name": "Qloapps/QloApps",
         "url": "https://github.com/Qloapps/QloApps",
-        "stars": 11961
+        "stars": 11963
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&h=400&fit=crop&q=80",
@@ -3759,7 +3957,7 @@
       "parent": {
         "name": "iOfficeAI/AionUi",
         "url": "https://github.com/iOfficeAI/AionUi",
-        "stars": 12833
+        "stars": 12901
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=800&h=400&fit=crop&q=80",
@@ -3781,7 +3979,7 @@
       "parent": {
         "name": "anomalyco/opencode",
         "url": "https://github.com/anomalyco/opencode",
-        "stars": 99908
+        "stars": 100058
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?w=800&h=400&fit=crop&q=80",
@@ -3979,7 +4177,7 @@
       "parent": {
         "name": "shridarpatil/whatomate",
         "url": "https://github.com/shridarpatil/whatomate",
-        "stars": 880
+        "stars": 882
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=400&fit=crop&q=80",
@@ -4067,7 +4265,7 @@
       "parent": {
         "name": "musistudio/claude-code-router",
         "url": "https://github.com/musistudio/claude-code-router",
-        "stars": 27426
+        "stars": 27443
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop&q=80",
@@ -4111,7 +4309,7 @@
       "parent": {
         "name": "muratcankoylan/ralph-wiggum-marketer",
         "url": "https://github.com/muratcankoylan/ralph-wiggum-marketer",
-        "stars": 620
+        "stars": 621
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&h=400&fit=crop&q=80",
@@ -4133,7 +4331,7 @@
       "parent": {
         "name": "vercel-labs/agent-browser",
         "url": "https://github.com/vercel-labs/agent-browser",
-        "stars": 13163
+        "stars": 13200
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&h=400&fit=crop&q=80",
@@ -4155,7 +4353,7 @@
       "parent": {
         "name": "vercel-labs/agent-skills",
         "url": "https://github.com/vercel-labs/agent-skills",
-        "stars": 19413
+        "stars": 19441
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop&q=80",
@@ -4243,7 +4441,7 @@
       "parent": {
         "name": "DevAgentForge/Open-Claude-Cowork",
         "url": "https://github.com/DevAgentForge/Open-Claude-Cowork",
-        "stars": 2799
+        "stars": 2802
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=400&fit=crop&q=80",
@@ -4309,7 +4507,7 @@
       "parent": {
         "name": "ggml-org/llama.cpp",
         "url": "https://github.com/ggml-org/llama.cpp",
-        "stars": 94608
+        "stars": 94621
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?w=800&h=400&fit=crop&q=80",
@@ -4331,7 +4529,7 @@
       "parent": {
         "name": "bensadeh/tailspin",
         "url": "https://github.com/bensadeh/tailspin",
-        "stars": 7644
+        "stars": 7646
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop&q=80",
@@ -4613,7 +4811,7 @@
       "parent": {
         "name": "Significant-Gravitas/AutoGPT",
         "url": "https://github.com/Significant-Gravitas/AutoGPT",
-        "stars": 181712
+        "stars": 181716
       },
       "type": "fork",
       "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop&q=80",
