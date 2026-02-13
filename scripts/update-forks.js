@@ -8,6 +8,7 @@ const CONFIG = {
   reposToShow: 999, // All repos - no limit
   batchSize: 50, // Process 50 articles per run, then commit
   apiDelay: 3000, // 3 seconds between AI requests (rotating models)
+  maxFiles: 200, // Max files to include from repo tree for AI context
   models: {
     endpoint: 'https://models.inference.ai.azure.com/chat/completions',
     // Rotate between models to maximize rate limits (50/day each)
@@ -126,7 +127,7 @@ async function fetchRepoTree(repo) {
     );
     if (response.ok) {
       const data = await response.json();
-      return (data.tree || []).filter(f => f.type === 'blob').map(f => f.path).slice(0, 30);
+      return (data.tree || []).filter(f => f.type === 'blob').map(f => f.path).slice(0, CONFIG.maxFiles);
     }
   } catch (e) {}
   return [];
