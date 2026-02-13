@@ -4,7 +4,7 @@ const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 // Configuration
 const CONFIG = {
-  username: 'yebeai',
+  username: 'moses-y',
   reposToShow: 999, // All repos - no limit
   batchSize: 50, // Process 50 articles per run, then commit
   apiDelay: 3000, // 3 seconds between AI requests (rotating models)
