@@ -6,8 +6,9 @@ const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const CONFIG = {
   username: 'moses-y',
   reposToShow: 999, // All repos - no limit
-  batchSize: 50, // Process 50 articles per run, then commit
+  batchSize: 10, // Reduced batch size to allow richer data extraction per repo
   apiDelay: 3000, // 3 seconds between AI requests (rotating models)
+  maxFiles: 200, // Max files to include from repo tree for AI context
   models: {
     endpoint: 'https://models.inference.ai.azure.com/chat/completions',
     // Rotate between models to maximize rate limits (50/day each)
@@ -126,13 +127,163 @@ async function fetchRepoTree(repo) {
     );
     if (response.ok) {
       const data = await response.json();
-      return (data.tree || []).filter(f => f.type === 'blob').map(f => f.path).slice(0, 30);
+      return (data.tree || []).filter(f => f.type === 'blob').map(f => f.path).slice(0, CONFIG.maxFiles);
     }
   } catch (e) {}
   return [];
 }
 
-async function generateBlogArticle(repo, readme, fileTree) {
+// Build knowledge graph from file tree to extract structured relationships
+function buildKnowledgeGraph(fileTree) {
+  const graph = {
+    directories: {},
+    languages: {},
+    entryPoints: [],
+    configFiles: [],
+    dependencies: [],
+    testFiles: [],
+    docs: []
+  };
+
+  const extToLang = {
+    '.js': 'JavaScript', '.ts': 'TypeScript', '.py': 'Python', '.rb': 'Ruby',
+    '.go': 'Go', '.rs': 'Rust', '.java': 'Java', '.kt': 'Kotlin',
+    '.cs': 'C#', '.cpp': 'C++', '.c': 'C', '.h': 'C/C++ Header',
+    '.swift': 'Swift', '.php': 'PHP', '.r': 'R', '.scala': 'Scala',
+    '.sh': 'Shell', '.bash': 'Shell', '.zsh': 'Shell',
+    '.html': 'HTML', '.css': 'CSS', '.scss': 'SCSS', '.less': 'LESS',
+    '.vue': 'Vue', '.svelte': 'Svelte', '.jsx': 'JSX', '.tsx': 'TSX',
+    '.yml': 'YAML', '.yaml': 'YAML', '.json': 'JSON', '.toml': 'TOML',
+    '.md': 'Markdown', '.rst': 'reStructuredText',
+    '.sql': 'SQL', '.graphql': 'GraphQL', '.proto': 'Protocol Buffers',
+    '.tf': 'Terraform', '.hcl': 'HCL',
+    '.dockerfile': 'Docker', '.ex': 'Elixir', '.exs': 'Elixir',
+    '.lua': 'Lua', '.dart': 'Dart', '.zig': 'Zig'
+  };
+
+  const entryFileNames = [
+    'main.js', 'main.ts', 'main.py', 'main.go', 'main.rs', 'main.c', 'main.cpp', 'main.java', 'main.kt', 'main.dart',
+    'index.js', 'index.ts', 'index.jsx', 'index.tsx', 'index.html',
+    'app.js', 'app.ts', 'app.py', 'app.jsx', 'app.tsx',
+    'server.js', 'server.ts', 'server.py', 'server.go',
+    'cli.js', 'cli.ts', 'cli.py',
+    '__main__.py', 'manage.py', 'setup.py', 'lib.rs'
+  ];
+  const entryDirPatterns = ['cmd/'];
+
+  const configPatterns = [
+    'package.json', 'tsconfig.json', 'webpack.config', 'vite.config',
+    'docker-compose', 'dockerfile', '.env.example', 'makefile',
+    'cargo.toml', 'go.mod', 'pyproject.toml', 'setup.cfg', 'setup.py',
+    'requirements.txt', 'gemfile', 'build.gradle', 'pom.xml',
+    'cmakelists.txt', '.eslintrc', '.prettierrc', 'jest.config',
+    'tailwind.config', 'next.config', 'nuxt.config'
+  ];
+
+  const depFiles = [
+    'package.json', 'requirements.txt', 'go.mod', 'cargo.toml',
+    'gemfile', 'build.gradle', 'pom.xml', 'pyproject.toml',
+    'pipfile', 'poetry.lock', 'yarn.lock', 'package-lock.json',
+    'composer.json', 'pubspec.yaml'
+  ];
+
+  const testPatterns = ['test', 'spec', '__test__', '__tests__', '_test.'];
+  const docPatterns = ['doc/', 'docs/', 'readme', 'changelog', 'contributing', 'license', 'guide'];
+
+  for (const filePath of fileTree) {
+    const parts = filePath.split('/');
+    const fileName = parts[parts.length - 1].toLowerCase();
+    const dotIndex = fileName.lastIndexOf('.');
+    const ext = dotIndex > 0 ? fileName.substring(dotIndex) : '';
+    const dirPath = parts.length > 1 ? parts.slice(0, -1).join('/') : '(root)';
+
+    // Count directory distribution
+    const topDir = parts.length > 1 ? parts[0] : '(root)';
+    graph.directories[topDir] = (graph.directories[topDir] || 0) + 1;
+
+    // Language distribution
+    if (ext && extToLang[ext]) {
+      graph.languages[extToLang[ext]] = (graph.languages[extToLang[ext]] || 0) + 1;
+    }
+
+    // Entry points
+    if (entryFileNames.some(p => fileName === p) || entryDirPatterns.some(p => filePath.toLowerCase().startsWith(p) || filePath.toLowerCase().includes('/' + p))) {
+      graph.entryPoints.push(filePath);
+    }
+
+    // Config files
+    if (configPatterns.some(p => fileName === p || fileName.startsWith(p))) {
+      graph.configFiles.push(filePath);
+    }
+
+    // Dependency files
+    if (depFiles.some(p => fileName === p)) {
+      graph.dependencies.push(filePath);
+    }
+
+    // Test files
+    if (testPatterns.some(p => filePath.toLowerCase().includes(p))) {
+      graph.testFiles.push(filePath);
+    }
+
+    // Documentation
+    if (docPatterns.some(p => filePath.toLowerCase().includes(p))) {
+      graph.docs.push(filePath);
+    }
+  }
+
+  return graph;
+}
+
+// Format knowledge graph as structured context for AI prompt
+function formatKnowledgeGraph(graph) {
+  const sections = [];
+
+  // Top directories by file count
+  const sortedDirs = Object.entries(graph.directories)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 10);
+  if (sortedDirs.length > 0) {
+    sections.push('DIRECTORY STRUCTURE:\n' + sortedDirs.map(([d, c]) => `  ${d}/ (${c} files)`).join('\n'));
+  }
+
+  // Language breakdown
+  const sortedLangs = Object.entries(graph.languages)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 8);
+  if (sortedLangs.length > 0) {
+    sections.push('LANGUAGE BREAKDOWN:\n' + sortedLangs.map(([l, c]) => `  ${l}: ${c} files`).join('\n'));
+  }
+
+  // Entry points
+  if (graph.entryPoints.length > 0) {
+    sections.push('ENTRY POINTS:\n' + graph.entryPoints.slice(0, 5).map(f => `  ${f}`).join('\n'));
+  }
+
+  // Config/build
+  if (graph.configFiles.length > 0) {
+    sections.push('CONFIG & BUILD:\n' + graph.configFiles.slice(0, 8).map(f => `  ${f}`).join('\n'));
+  }
+
+  // Dependencies
+  if (graph.dependencies.length > 0) {
+    sections.push('DEPENDENCY FILES:\n' + graph.dependencies.slice(0, 5).map(f => `  ${f}`).join('\n'));
+  }
+
+  // Tests
+  if (graph.testFiles.length > 0) {
+    sections.push(`TESTS: ${graph.testFiles.length} test files found`);
+  }
+
+  // Docs
+  if (graph.docs.length > 0) {
+    sections.push(`DOCUMENTATION: ${graph.docs.length} doc files found`);
+  }
+
+  return sections.join('\n\n');
+}
+
+async function generateBlogArticle(repo, readme, fileTree, knowledgeGraph) {
   if (!GITHUB_TOKEN) {
     return generateFallbackSummary(repo);
   }
@@ -144,6 +295,7 @@ async function generateBlogArticle(repo, readme, fileTree) {
   }
 
   try {
+    const graphContext = knowledgeGraph ? formatKnowledgeGraph(knowledgeGraph) : '';
     const context = `
 REPOSITORY: ${repo.name}
 DESCRIPTION: ${repo.description || 'No description'}
@@ -152,6 +304,7 @@ TOPICS/TAGS: ${(repo.topics || []).join(', ') || 'None'}
 STARS: ${repo.stargazers_count || 0}
 ${repo.parent ? `FORKED FROM: ${repo.parent.name} (${repo.parent.stars} stars)` : 'ORIGINAL PROJECT'}
 
+${graphContext ? `PROJECT ANALYSIS:\n${graphContext}\n` : ''}
 FILE STRUCTURE:
 ${fileTree.length > 0 ? fileTree.join('\n') : 'Not available'}
 
@@ -404,10 +557,16 @@ async function main() {
       console.log(`  - README: ${readme ? `${readme.length} chars` : 'not found'}`);
       console.log(`  - Files: ${fileTree.length} discovered`);
 
+      // Build knowledge graph from file tree
+      const knowledgeGraph = buildKnowledgeGraph(fileTree);
+      const langCount = Object.keys(knowledgeGraph.languages).length;
+      const dirCount = Object.keys(knowledgeGraph.directories).length;
+      console.log(`  - Knowledge graph: ${dirCount} dirs, ${langCount} languages, ${knowledgeGraph.entryPoints.length} entry points`);
+
       // Try to generate AI article (skip if rate limited)
       let article = null;
       if (!rateLimitHit) {
-        article = await generateBlogArticle(detailed, readme, fileTree);
+        article = await generateBlogArticle(detailed, readme, fileTree, knowledgeGraph);
         aiCallCount++;
 
         if (article) {
@@ -443,7 +602,8 @@ async function main() {
         image: getRandomUnsplashUrl(i),
         forkedAt: formatDate(repo.created_at),
         updatedAt: formatDate(repo.updated_at),
-        readTime: estimateReadTime(finalArticle)
+        readTime: estimateReadTime(finalArticle),
+        knowledgeGraph: knowledgeGraph
       });
 
       // Rate limiting delay (only between AI calls, skip if rate limited)

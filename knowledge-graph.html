@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Graph | Moses Yebei</title>
+    <meta name="description" content="Interactive knowledge graph visualization of repository structures, languages, and relationships.">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔗</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #030303;
+            --bg-secondary: #0a0a0a;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --bg-card-hover: rgba(255, 255, 255, 0.06);
+            --text-primary: #fafafa;
+            --text-secondary: #888888;
+            --text-tertiary: #555555;
+            --accent: #6366f1;
+            --accent-secondary: #8b5cf6;
+            --accent-glow: rgba(99, 102, 241, 0.4);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.15);
+            --gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
+            --glass: rgba(255, 255, 255, 0.02);
+            --glass-border: rgba(255, 255, 255, 0.05);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-card: rgba(0, 0, 0, 0.02);
+            --bg-card-hover: rgba(0, 0, 0, 0.05);
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --text-tertiary: #94a3b8;
+            --border: rgba(0, 0, 0, 0.08);
+            --border-hover: rgba(0, 0, 0, 0.15);
+            --glass: rgba(0, 0, 0, 0.02);
+            --glass-border: rgba(0, 0, 0, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1rem 2rem;
+            background: rgba(3, 3, 3, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        [data-theme="light"] nav {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-logo {
+            font-weight: 800;
+            font-size: 1.25rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--text-primary); background: var(--bg-card); }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover { border-color: var(--border-hover); color: var(--text-primary); }
+        [data-theme="light"] .theme-toggle .moon { display: none; }
+        :not([data-theme="light"]) .theme-toggle .sun { display: none; }
+
+        /* Controls Bar */
+        .controls {
+            position: fixed;
+            top: 65px;
+            left: 0;
+            right: 0;
+            z-index: 90;
+            padding: 0.75rem 2rem;
+            background: rgba(3, 3, 3, 0.6);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        [data-theme="light"] .controls {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .controls select, .controls input {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.8rem;
+        }
+
+        .controls select:focus, .controls input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .controls label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .view-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .view-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
+        .view-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+        .stats-bar {
+            margin-left: auto;
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+        }
+
+        .stats-bar span strong {
+            color: var(--text-secondary);
+        }
+
+        /* Graph Container */
+        #graph-container {
+            position: fixed;
+            top: 120px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        #graph-container svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            padding: 0.75rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.15s;
+            max-width: 320px;
+            z-index: 200;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .tooltip.visible { opacity: 1; }
+
+        .tooltip h4 {
+            font-size: 0.85rem;
+            margin-bottom: 0.3rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tooltip .detail {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .tooltip .tag {
+            display: inline-block;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            margin: 0.15rem 0.1rem;
+            color: var(--text-secondary);
+        }
+
+        /* Side Panel */
+        .side-panel {
+            position: fixed;
+            top: 120px;
+            right: 0;
+            width: 320px;
+            bottom: 0;
+            background: var(--bg-secondary);
+            border-left: 1px solid var(--border);
+            padding: 1.25rem;
+            overflow-y: auto;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 80;
+        }
+
+        .side-panel.open { transform: translateX(0); }
+
+        .side-panel h3 {
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .side-panel .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .panel-section {
+            margin-bottom: 1rem;
+        }
+
+        .panel-section h4 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-tertiary);
+            margin-bottom: 0.4rem;
+        }
+
+        .panel-section .bar {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.3rem;
+            font-size: 0.8rem;
+        }
+
+        .panel-section .bar-fill {
+            height: 6px;
+            border-radius: 3px;
+            background: var(--gradient);
+            flex-shrink: 0;
+        }
+
+        .panel-section .bar-label {
+            color: var(--text-secondary);
+            min-width: 80px;
+            font-size: 0.75rem;
+        }
+
+        .panel-section .bar-count {
+            color: var(--text-tertiary);
+            font-size: 0.7rem;
+            margin-left: auto;
+        }
+
+        .panel-section .file-list {
+            list-style: none;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .panel-section .file-list li {
+            padding: 0.2rem 0;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+
+        /* Loading */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            gap: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav { padding: 0.75rem 1rem; }
+            .controls { padding: 0.5rem 1rem; font-size: 0.75rem; }
+            .nav-title { display: none; }
+            .stats-bar { display: none; }
+            .side-panel { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-left">
+            <a href="index.html" class="nav-logo">MY</a>
+            <span class="nav-title">Knowledge Graph Explorer</span>
+            <ul class="nav-links">
+                <li><a href="index.html">← Portfolio</a></li>
+                <li><a href="index.html#projects">Projects</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                </svg>
+                <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Controls -->
+    <div class="controls">
+        <label>
+            View:
+            <select id="view-mode">
+                <option value="ecosystem">Ecosystem Overview</option>
+                <option value="single">Single Repo</option>
+            </select>
+        </label>
+        <label id="repo-select-wrapper" style="display:none">
+            Repo:
+            <select id="repo-select"></select>
+        </label>
+        <label>
+            Search:
+            <input type="text" id="search" placeholder="Filter repos..." style="width:140px">
+        </label>
+        <div class="stats-bar" id="stats-bar">
+            <span>Repos: <strong id="stat-repos">0</strong></span>
+            <span>Languages: <strong id="stat-langs">0</strong></span>
+            <span>With KG: <strong id="stat-kg">0</strong></span>
+        </div>
+    </div>
+
+    <!-- Graph -->
+    <div id="graph-container">
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <span>Loading knowledge graphs...</span>
+        </div>
+    </div>
+
+    <!-- Tooltip -->
+    <div class="tooltip" id="tooltip"></div>
+
+    <!-- Side Panel -->
+    <div class="side-panel" id="side-panel">
+        <button class="close-btn" onclick="closeSidePanel()">✕</button>
+        <div id="panel-content"></div>
+    </div>
+
+    <!-- D3.js from CDN -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <script>
+    // Theme
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    if (savedTheme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        document.documentElement.setAttribute('data-theme', isLight ? '' : 'light');
+        localStorage.setItem('theme', isLight ? 'dark' : 'light');
+    });
+
+    // Color palette for languages
+    const langColors = {
+        'JavaScript': '#f1e05a', 'TypeScript': '#3178c6', 'Python': '#3572A5',
+        'Go': '#00ADD8', 'Rust': '#dea584', 'Java': '#b07219', 'C++': '#f34b7d',
+        'C': '#555555', 'C#': '#178600', 'Ruby': '#701516', 'PHP': '#4F5D95',
+        'Swift': '#F05138', 'Kotlin': '#A97BFF', 'Dart': '#00B4AB',
+        'Shell': '#89e051', 'HTML': '#e34c26', 'CSS': '#563d7c', 'SCSS': '#c6538c',
+        'Vue': '#41b883', 'Svelte': '#ff3e00', 'JSX': '#f1e05a', 'TSX': '#3178c6',
+        'YAML': '#cb171e', 'JSON': '#292929', 'Markdown': '#083fa1',
+        'SQL': '#e38c00', 'Docker': '#384d54', 'Terraform': '#5C4EE5',
+        'Elixir': '#6e4a7e', 'Lua': '#000080', 'Scala': '#c22d40',
+        'R': '#198CE7', 'GraphQL': '#e10098', 'Zig': '#ec915c'
+    };
+
+    function getColor(name) {
+        return langColors[name] || d3.schemeTableau10[Math.abs(hashStr(name)) % 10];
+    }
+
+    function hashStr(s) {
+        let h = 0;
+        for (let i = 0; i < s.length; i++) h = ((h << 5) - h + s.charCodeAt(i)) | 0;
+        return h;
+    }
+
+    // State
+    let allData = [];
+    let currentView = 'ecosystem';
+
+    // Load data
+    async function loadData() {
+        try {
+            const resp = await fetch('forks.json');
+            const data = await resp.json();
+            allData = (data.forks || []).filter(f => f.knowledgeGraph);
+            document.getElementById('stat-repos').textContent = data.forks?.length || 0;
+            document.getElementById('stat-kg').textContent = allData.length;
+
+            // Count unique languages
+            const allLangs = new Set();
+            allData.forEach(f => {
+                if (f.knowledgeGraph?.languages) {
+                    Object.keys(f.knowledgeGraph.languages).forEach(l => allLangs.add(l));
+                }
+            });
+            document.getElementById('stat-langs').textContent = allLangs.size;
+
+            // Populate repo selector
+            const sel = document.getElementById('repo-select');
+            allData.sort((a, b) => a.name.localeCompare(b.name)).forEach(f => {
+                const opt = document.createElement('option');
+                opt.value = f.name;
+                opt.textContent = f.displayName || f.name;
+                sel.appendChild(opt);
+            });
+
+            document.getElementById('loading').style.display = 'none';
+            renderGraph();
+        } catch (e) {
+            document.getElementById('loading').innerHTML =
+                '<span style="color:#ef4444">Knowledge graphs are not yet available. They will be generated during the next data update.</span>';
+            console.error('Load error:', e);
+        }
+    }
+
+    // Event listeners
+    document.getElementById('view-mode').addEventListener('change', (e) => {
+        currentView = e.target.value;
+        document.getElementById('repo-select-wrapper').style.display =
+            currentView === 'single' ? '' : 'none';
+        renderGraph();
+    });
+
+    document.getElementById('repo-select').addEventListener('change', () => renderGraph());
+
+    document.getElementById('search').addEventListener('input', (e) => {
+        renderGraph(e.target.value.toLowerCase());
+    });
+
+    function renderGraph(filter) {
+        if (currentView === 'ecosystem') {
+            renderEcosystemGraph(filter);
+        } else {
+            const name = document.getElementById('repo-select').value;
+            const repo = allData.find(f => f.name === name);
+            if (repo) renderSingleRepoGraph(repo);
+        }
+    }
+
+    // ========== ECOSYSTEM VIEW ==========
+    function renderEcosystemGraph(filter) {
+        const container = document.getElementById('graph-container');
+        container.querySelectorAll('svg').forEach(s => s.remove());
+
+        let repos = allData;
+        if (filter) {
+            repos = repos.filter(f =>
+                f.name.toLowerCase().includes(filter) ||
+                (f.language || '').toLowerCase().includes(filter) ||
+                (f.description || '').toLowerCase().includes(filter)
+            );
+        }
+
+        if (repos.length === 0) {
+            container.innerHTML = '<div class="loading"><span>No repos with knowledge graphs found matching your filter.</span></div>';
+            return;
+        }
+
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+
+        // Build nodes and links
+        const nodes = [];
+        const links = [];
+        const langNodes = new Map();
+
+        // Add language hub nodes
+        const langCounts = {};
+        repos.forEach(f => {
+            if (f.knowledgeGraph?.languages) {
+                Object.entries(f.knowledgeGraph.languages).forEach(([lang, count]) => {
+                    langCounts[lang] = (langCounts[lang] || 0) + count;
+                });
+            }
+        });
+
+        // Top languages as hub nodes
+        const topLangs = Object.entries(langCounts)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 15);
+
+        topLangs.forEach(([lang, count]) => {
+            const node = { id: 'lang-' + lang, name: lang, type: 'language', count, radius: Math.min(30, 10 + Math.sqrt(count)) };
+            nodes.push(node);
+            langNodes.set(lang, node);
+        });
+
+        // Repo nodes
+        repos.forEach(repo => {
+            const kg = repo.knowledgeGraph;
+            const totalFiles = kg ? Object.values(kg.directories || {}).reduce((a, b) => a + b, 0) : 0;
+            const repoNode = {
+                id: 'repo-' + repo.name,
+                name: repo.displayName || repo.name,
+                repoName: repo.name,
+                type: 'repo',
+                language: repo.language,
+                stars: repo.stars || 0,
+                description: repo.description,
+                totalFiles,
+                kg,
+                radius: Math.max(5, Math.min(18, 4 + Math.sqrt(totalFiles)))
+            };
+            nodes.push(repoNode);
+
+            // Link repo to its languages
+            if (kg?.languages) {
+                const repoLangs = Object.entries(kg.languages).sort((a, b) => b[1] - a[1]);
+                repoLangs.forEach(([lang, count]) => {
+                    if (langNodes.has(lang)) {
+                        links.push({
+                            source: repoNode.id,
+                            target: 'lang-' + lang,
+                            value: count
+                        });
+                    }
+                });
+            }
+        });
+
+        // D3 force simulation
+        const svg = d3.select(container).append('svg')
+            .attr('width', width)
+            .attr('height', height);
+
+        // Zoom
+        const g = svg.append('g');
+        svg.call(d3.zoom()
+            .scaleExtent([0.1, 4])
+            .on('zoom', (event) => g.attr('transform', event.transform)));
+
+        const simulation = d3.forceSimulation(nodes)
+            .force('link', d3.forceLink(links).id(d => d.id).distance(d => 80 + (d.value ? 50 / d.value : 0)))
+            .force('charge', d3.forceManyBody().strength(d => d.type === 'language' ? -300 : -60))
+            .force('center', d3.forceCenter(width / 2, height / 2))
+            .force('collision', d3.forceCollide().radius(d => d.radius + 3));
+
+        // Links
+        const link = g.append('g')
+            .selectAll('line')
+            .data(links)
+            .join('line')
+            .attr('stroke', d => {
+                const langName = typeof d.target === 'string' ? d.target.replace('lang-', '') : d.target.name;
+                return getColor(langName);
+            })
+            .attr('stroke-opacity', 0.15)
+            .attr('stroke-width', d => Math.max(0.5, Math.min(3, d.value / 5)));
+
+        // Nodes
+        const node = g.append('g')
+            .selectAll('g')
+            .data(nodes)
+            .join('g')
+            .call(d3.drag()
+                .on('start', (event, d) => { if (!event.active) simulation.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
+                .on('drag', (event, d) => { d.fx = event.x; d.fy = event.y; })
+                .on('end', (event, d) => { if (!event.active) simulation.alphaTarget(0); d.fx = null; d.fy = null; })
+            );
+
+        // Circles
+        node.append('circle')
+            .attr('r', d => d.radius)
+            .attr('fill', d => {
+                if (d.type === 'language') return getColor(d.name);
+                if (d.language) {
+                    const c = d3.color(getColor(d.language));
+                    if (c) { c.opacity = 0.6; return c.formatRgb(); }
+                }
+                return 'var(--text-tertiary)';
+            })
+            .attr('stroke', d => d.type === 'language' ? getColor(d.name) : 'var(--border)')
+            .attr('stroke-width', d => d.type === 'language' ? 2 : 1)
+            .attr('cursor', 'pointer')
+            .on('click', (event, d) => {
+                if (d.type === 'repo' && d.kg) openSidePanel(d);
+            });
+
+        // Labels for language hubs
+        node.filter(d => d.type === 'language')
+            .append('text')
+            .text(d => d.name)
+            .attr('text-anchor', 'middle')
+            .attr('dy', d => d.radius + 14)
+            .attr('font-size', '0.65rem')
+            .attr('font-weight', 600)
+            .attr('fill', d => getColor(d.name));
+
+        // Hover tooltip
+        const tooltip = document.getElementById('tooltip');
+
+        node.on('mouseenter', (event, d) => {
+            let html = '';
+            if (d.type === 'language') {
+                const repoCount = links.filter(l => (typeof l.target === 'string' ? l.target : l.target.id) === d.id).length;
+                html = `<h4>${d.name}</h4><div class="detail">${d.count} files across ${repoCount} repos</div>`;
+            } else {
+                html = `<h4>${d.name}</h4>`;
+                if (d.description) html += `<div class="detail">${d.description}</div>`;
+                if (d.kg?.languages) {
+                    const langs = Object.entries(d.kg.languages).sort((a, b) => b[1] - a[1]).slice(0, 5);
+                    html += '<div style="margin-top:4px">' + langs.map(([l, c]) => `<span class="tag">${l}: ${c}</span>`).join('') + '</div>';
+                }
+                html += `<div class="detail" style="margin-top:4px">${d.totalFiles} files · ★ ${d.stars}</div>`;
+            }
+            tooltip.innerHTML = html;
+            tooltip.style.left = (event.clientX + 12) + 'px';
+            tooltip.style.top = (event.clientY - 10) + 'px';
+            tooltip.classList.add('visible');
+        })
+        .on('mousemove', (event) => {
+            tooltip.style.left = (event.clientX + 12) + 'px';
+            tooltip.style.top = (event.clientY - 10) + 'px';
+        })
+        .on('mouseleave', () => {
+            tooltip.classList.remove('visible');
+        });
+
+        simulation.on('tick', () => {
+            link
+                .attr('x1', d => d.source.x)
+                .attr('y1', d => d.source.y)
+                .attr('x2', d => d.target.x)
+                .attr('y2', d => d.target.y);
+            node.attr('transform', d => `translate(${d.x},${d.y})`);
+        });
+    }
+
+    // ========== SINGLE REPO VIEW ==========
+    function renderSingleRepoGraph(repo) {
+        const container = document.getElementById('graph-container');
+        container.querySelectorAll('svg').forEach(s => s.remove());
+
+        const kg = repo.knowledgeGraph;
+        if (!kg) {
+            container.innerHTML = '<div class="loading"><span>No knowledge graph data for this repo.</span></div>';
+            return;
+        }
+
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+        const nodes = [];
+        const links = [];
+
+        // Center node: repo
+        const centerNode = { id: 'center', name: repo.displayName || repo.name, type: 'repo', radius: 25, fx: width / 2, fy: height / 2 };
+        nodes.push(centerNode);
+
+        // Directory nodes
+        Object.entries(kg.directories || {}).sort((a, b) => b[1] - a[1]).slice(0, 12).forEach(([dir, count]) => {
+            const n = { id: 'dir-' + dir, name: dir + '/', type: 'directory', count, radius: 8 + Math.sqrt(count) * 2 };
+            nodes.push(n);
+            links.push({ source: 'center', target: n.id, value: count });
+        });
+
+        // Language nodes
+        Object.entries(kg.languages || {}).sort((a, b) => b[1] - a[1]).slice(0, 10).forEach(([lang, count]) => {
+            const n = { id: 'lang-' + lang, name: lang, type: 'language', count, radius: 8 + Math.sqrt(count) * 2 };
+            nodes.push(n);
+            links.push({ source: 'center', target: n.id, value: count });
+        });
+
+        // Entry point nodes
+        (kg.entryPoints || []).slice(0, 6).forEach((ep, i) => {
+            const n = { id: 'entry-' + i, name: ep, type: 'entry', radius: 7 };
+            nodes.push(n);
+            links.push({ source: 'center', target: n.id, value: 1 });
+        });
+
+        // Config nodes
+        (kg.configFiles || []).slice(0, 6).forEach((cf, i) => {
+            const n = { id: 'config-' + i, name: cf, type: 'config', radius: 6 };
+            nodes.push(n);
+            links.push({ source: 'center', target: n.id, value: 1 });
+        });
+
+        // Link dirs to languages (if possible)
+        // This creates a richer graph by connecting directories to languages
+
+        const svg = d3.select(container).append('svg')
+            .attr('width', width)
+            .attr('height', height);
+
+        const g = svg.append('g');
+        svg.call(d3.zoom()
+            .scaleExtent([0.3, 4])
+            .on('zoom', (event) => g.attr('transform', event.transform)));
+
+        const simulation = d3.forceSimulation(nodes)
+            .force('link', d3.forceLink(links).id(d => d.id).distance(100))
+            .force('charge', d3.forceManyBody().strength(-200))
+            .force('center', d3.forceCenter(width / 2, height / 2))
+            .force('collision', d3.forceCollide().radius(d => d.radius + 8));
+
+        const typeColors = {
+            repo: 'var(--accent)',
+            directory: '#22c55e',
+            language: null, // uses langColors
+            entry: '#f59e0b',
+            config: '#ef4444'
+        };
+
+        const link = g.append('g')
+            .selectAll('line')
+            .data(links)
+            .join('line')
+            .attr('stroke', 'var(--border)')
+            .attr('stroke-opacity', 0.4)
+            .attr('stroke-width', d => Math.max(1, Math.min(3, d.value / 3)));
+
+        const node = g.append('g')
+            .selectAll('g')
+            .data(nodes)
+            .join('g')
+            .call(d3.drag()
+                .on('start', (event, d) => { if (!event.active) simulation.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
+                .on('drag', (event, d) => { d.fx = event.x; d.fy = event.y; })
+                .on('end', (event, d) => { if (!event.active) simulation.alphaTarget(0); if (d.id !== 'center') { d.fx = null; d.fy = null; } })
+            );
+
+        node.append('circle')
+            .attr('r', d => d.radius)
+            .attr('fill', d => {
+                if (d.type === 'language') return getColor(d.name);
+                return typeColors[d.type] || '#888';
+            })
+            .attr('stroke', 'var(--border)')
+            .attr('stroke-width', 1)
+            .attr('opacity', 0.85);
+
+        // Labels
+        node.append('text')
+            .text(d => {
+                if (d.type === 'config' || d.type === 'entry') {
+                    const parts = d.name.split('/');
+                    return parts[parts.length - 1];
+                }
+                return d.name;
+            })
+            .attr('text-anchor', 'middle')
+            .attr('dy', d => d.radius + 13)
+            .attr('font-size', d => d.type === 'repo' ? '0.8rem' : '0.65rem')
+            .attr('font-weight', d => d.type === 'repo' ? 700 : 400)
+            .attr('fill', d => {
+                if (d.type === 'language') return getColor(d.name);
+                return 'var(--text-secondary)';
+            });
+
+        // Type labels (small)
+        node.filter(d => d.type !== 'repo')
+            .append('text')
+            .text(d => {
+                const labels = { directory: '📁', language: '💻', entry: '🚀', config: '⚙️' };
+                return labels[d.type] || '';
+            })
+            .attr('text-anchor', 'middle')
+            .attr('dy', '0.35em')
+            .attr('font-size', d => Math.max(8, d.radius * 0.8) + 'px');
+
+        // Tooltip
+        const tooltip = document.getElementById('tooltip');
+
+        node.on('mouseenter', (event, d) => {
+            let html = `<h4>${d.name}</h4>`;
+            if (d.count) html += `<div class="detail">${d.count} files</div>`;
+            if (d.type !== 'repo') html += `<div class="detail" style="margin-top:2px">Type: ${d.type}</div>`;
+            tooltip.innerHTML = html;
+            tooltip.style.left = (event.clientX + 12) + 'px';
+            tooltip.style.top = (event.clientY - 10) + 'px';
+            tooltip.classList.add('visible');
+        })
+        .on('mousemove', (event) => {
+            tooltip.style.left = (event.clientX + 12) + 'px';
+            tooltip.style.top = (event.clientY - 10) + 'px';
+        })
+        .on('mouseleave', () => tooltip.classList.remove('visible'));
+
+        simulation.on('tick', () => {
+            link
+                .attr('x1', d => d.source.x)
+                .attr('y1', d => d.source.y)
+                .attr('x2', d => d.target.x)
+                .attr('y2', d => d.target.y);
+            node.attr('transform', d => `translate(${d.x},${d.y})`);
+        });
+
+        // Auto-open side panel
+        openSidePanel({ name: repo.displayName || repo.name, repoName: repo.name, description: repo.description, stars: repo.stars, kg, totalFiles: Object.values(kg.directories || {}).reduce((a, b) => a + b, 0) });
+    }
+
+    // ========== SIDE PANEL ==========
+    function openSidePanel(d) {
+        const panel = document.getElementById('side-panel');
+        const content = document.getElementById('panel-content');
+        const kg = d.kg;
+
+        let html = `<h3>${d.name}</h3>`;
+        if (d.description) html += `<p style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:1rem">${d.description}</p>`;
+
+        // Languages
+        if (kg.languages && Object.keys(kg.languages).length > 0) {
+            const sorted = Object.entries(kg.languages).sort((a, b) => b[1] - a[1]);
+            const max = sorted[0][1];
+            html += '<div class="panel-section"><h4>Languages</h4>';
+            sorted.slice(0, 8).forEach(([lang, count]) => {
+                const pct = Math.round(count / max * 100);
+                html += `<div class="bar"><span class="bar-label">${lang}</span><div class="bar-fill" style="width:${pct}px;background:${getColor(lang)}"></div><span class="bar-count">${count}</span></div>`;
+            });
+            html += '</div>';
+        }
+
+        // Directories
+        if (kg.directories && Object.keys(kg.directories).length > 0) {
+            const sorted = Object.entries(kg.directories).sort((a, b) => b[1] - a[1]);
+            const max = sorted[0][1];
+            html += '<div class="panel-section"><h4>Directories</h4>';
+            sorted.slice(0, 8).forEach(([dir, count]) => {
+                const pct = Math.round(count / max * 100);
+                html += `<div class="bar"><span class="bar-label">${dir}/</span><div class="bar-fill" style="width:${pct}px;background:#22c55e"></div><span class="bar-count">${count}</span></div>`;
+            });
+            html += '</div>';
+        }
+
+        // Entry points
+        if (kg.entryPoints && kg.entryPoints.length > 0) {
+            html += '<div class="panel-section"><h4>Entry Points</h4><ul class="file-list">';
+            kg.entryPoints.slice(0, 6).forEach(f => { html += `<li>🚀 ${f}</li>`; });
+            html += '</ul></div>';
+        }
+
+        // Config files
+        if (kg.configFiles && kg.configFiles.length > 0) {
+            html += '<div class="panel-section"><h4>Config & Build</h4><ul class="file-list">';
+            kg.configFiles.slice(0, 8).forEach(f => { html += `<li>⚙️ ${f}</li>`; });
+            html += '</ul></div>';
+        }
+
+        // Dependencies
+        if (kg.dependencies && kg.dependencies.length > 0) {
+            html += '<div class="panel-section"><h4>Dependency Files</h4><ul class="file-list">';
+            kg.dependencies.forEach(f => { html += `<li>📦 ${f}</li>`; });
+            html += '</ul></div>';
+        }
+
+        // Stats
+        html += '<div class="panel-section"><h4>Stats</h4>';
+        html += `<div class="detail">Total files: ${d.totalFiles || '—'}</div>`;
+        html += `<div class="detail">Tests: ${kg.testFiles?.length || 0} files</div>`;
+        html += `<div class="detail">Docs: ${kg.docs?.length || 0} files</div>`;
+        if (d.stars !== undefined) html += `<div class="detail">Stars: ★ ${d.stars}</div>`;
+        html += '</div>';
+
+        content.innerHTML = html;
+        panel.classList.add('open');
+    }
+
+    function closeSidePanel() {
+        document.getElementById('side-panel').classList.remove('open');
+    }
+
+    // Init
+    loadData();
+    </script>
+</body>
+</html>
