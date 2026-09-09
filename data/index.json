@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-09T10:17:27.174Z",
+ "generated": "2026-09-09T12:25:00.138Z",
  "links": [
   [
    482038562,
@@ -67873,6 +67873,32 @@
    "x": 2,
    "y": 0,
    "z": "September 9, 2026"
+  },
+  {
+   "L": {
+    "Markdown": 5
+   },
+   "a": 1,
+   "c": "00010",
+   "d": "No description available",
+   "f": 6,
+   "g": "Knowledge & Content",
+   "i": 1362564268,
+   "k": "Docs / content",
+   "l": null,
+   "m": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop&q=80",
+   "n": "prod-UAE-Corporate-Tax-Skill",
+   "p": {
+    "n": "Git-Agni/prod-UAE-Corporate-Tax-Skill",
+    "s": 30,
+    "u": "https://github.com/Git-Agni/prod-UAE-Corporate-Tax-Skill"
+   },
+   "r": 5,
+   "s": 0,
+   "t": "prod UAE Corporate Tax Skill",
+   "x": 2,
+   "y": 0,
+   "z": "September 9, 2026"
   }
  ],
  "taxonomy": {
@@ -67891,7 +67917,7 @@
   "domains": {
    "AI & Data": 512,
    "Agent Skills & Plugins": 52,
-   "Knowledge & Content": 62,
+   "Knowledge & Content": 63,
    "Mobile": 56,
    "Other": 2,
    "Systems & Infra": 307,
@@ -67900,7 +67926,7 @@
   "kinds": {
    "CLI tool": 132,
    "Codebase": 169,
-   "Docs / content": 55,
+   "Docs / content": 56,
    "Library / SDK": 75,
    "Mobile app": 104,
    "Notebook / research": 19,
@@ -67941,11 +67967,11 @@
    "reStructuredText": 2
   }
  },
- "total": 1520,
+ "total": 1521,
  "totals": {
-  "files": 1689008,
-  "findings": 1769,
+  "files": 1689014,
+  "findings": 1771,
   "links": 3444,
-  "withArticle": 1520
+  "withArticle": 1521
  }
 }

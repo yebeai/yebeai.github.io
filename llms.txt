@@ -1,6 +1,6 @@
 # Moses Yebei - repository estate
 
-> 1520 public repositories, analysed and related to each other.
+> 1521 public repositories, analysed and related to each other.
 > Provenance is stated per fact rather than claimed for the site as a whole.
 > The file census, architecture pass, dependency scan, advisory scan, hygiene
 > audit, domain classification and eight-category grade are EXTRACTED: measured
@@ -15,7 +15,7 @@
 ## Data
 
 - [Schema](https://moses-y.github.io/data/schema.json): what every field in the index means. Read this first; the record keys are single letters.
-- [Index](https://moses-y.github.io/data/index.json): all 1520 repositories with language, domain, kind, capabilities, hygiene severities and semantic coordinates, plus 3444 similarity edges. Large - prefer the neighbourhood files below for traversal.
+- [Index](https://moses-y.github.io/data/index.json): all 1521 repositories with language, domain, kind, capabilities, hygiene severities and semantic coordinates, plus 3444 similarity edges. Large - prefer the neighbourhood files below for traversal.
 - [Relations manifest](https://moses-y.github.io/data/relations.json): edge types, thresholds and counts for the relation layer.
 - [Clusters](https://moses-y.github.io/data/clusters.json): 61 groups of near-duplicate work covering 167 repositories, each with member grades and which one is the keeper.
 - [Cluster report](https://moses-y.github.io/data/clusters.md): the same 61 groups written out as prose, cross-domain ones first, each with its keeper and how much of it is unaudited. Read this instead of clusters.json if you want the argument rather than the records.
@@ -28,7 +28,7 @@
 ## Answering a question with these files
 
 1. Resolve a repository to its numeric id once, from /data/index.json or /data/search.json. Ids are stable across renames.
-2. Fetch https://moses-y.github.io/data/kin/<id>.json, about 1 KB. It carries both edge types with their provenance, so "what else is like this" costs one small request rather than a parse of the 1138 KB index.
+2. Fetch https://moses-y.github.io/data/kin/<id>.json, about 1 KB. It carries both edge types with their provenance, so "what else is like this" costs one small request rather than a parse of the 1139 KB index.
 3. Repeat step 2 for any neighbour id. Traversal never needs the index again.
 4. For a group rather than a neighbour, /data/clusters.json names the keeper; /data/clusters.md is the same thing as prose.
 
@@ -44,9 +44,9 @@ Prefer a neighbour that appears in both the stack and semantic lists of a kin fi
 
 ## Notes
 
-- Domains: Web & Interfaces 529, AI & Data 512, Systems & Infra 307, Knowledge & Content 62, Mobile 56, Agent Skills & Plugins 52, Other 2.
+- Domains: Web & Interfaces 529, AI & Data 512, Systems & Infra 307, Knowledge & Content 63, Mobile 56, Agent Skills & Plugins 52, Other 2.
 - Two edge types relate repositories, and they differ in how much they can be trusted. "stack" is EXTRACTED: IDF-weighted overlap of dependencies both repositories declare in a manifest, and each edge names the packages it was drawn from, so it can be checked and disagreed with. It answers "built the way you build things". "semantic" is INFERRED: cosine distance between embeddings, with no evidence attached beyond the number itself. It answers "probably solves the same problem". A pair scoring on both is the strongest signal that one repository is a usable starting point for the other, because the extracted edge corroborates the inferred one.
 - Clusters in clusters.json are built from semantic edges only, so they inherit that provenance: they are INFERRED. Method is Louvain modularity over the thresholded semantic edges: a group is a set of repositories linked more densely to each other than to the rest of the estate. That is a stronger claim than the connected components this previously used, which chained through bridge repositories, but it is still a claim about an embedding and not about code. A large group is a set of closely related projects, not a set of duplicates.
 - Stack edges exist only for the 459 repositories that declare dependencies in a manifest this pipeline reads.
-- Grades cover 1518 of 1520 repositories. An absent grade means not yet audited, not a bad grade.
+- Grades cover 1518 of 1521 repositories. An absent grade means not yet audited, not a bad grade.
 - Generated 2026-09-09.

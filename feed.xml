@@ -5,7 +5,7 @@
     <link>https://moses-y.github.io</link>
     <description>Technical articles and project deep-dives by Moses Yebei</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 09 Sep 2026 10:17:27 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 09 Sep 2026 12:25:00 GMT</lastBuildDate>
     <atom:link href="https://moses-y.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://moses-y.github.io/favicon.ico</url>
@@ -38,6 +38,19 @@ This repository addresses the challenge of delivering a high-fidelity, interacti
 ## What This Does
 This is a React‑driven 3D application rendered via WebGL. `src/index.html` is the H...</description>
       <category>TypeScript</category>
+      
+    </item>
+    <item>
+      <title>prod UAE Corporate Tax Skill</title>
+      <link>https://moses-y.github.io/blog/prod-UAE-Corporate-Tax-Skill.html</link>
+      <guid isPermaLink="true">https://moses-y.github.io/blog/prod-UAE-Corporate-Tax-Skill.html</guid>
+      <pubDate>Wed, 09 Sep 2026 00:00:00 GMT</pubDate>
+      <description>## The Problem
+UAE companies must register for Corporate Tax within 3 months of incorporation, with a late-registration penalty of AED 10,000. Engaging agents or consultants costs AED 1,000–1,500 to complete a single form on the FTA&apos;s EmaraTax portal. This repo provides a skill to let AI agents automate that form-filling, potentially eliminating the fee entirely.
+
+## What This Does
+The repository contains a skill for AI agents to automate UAE Corporate Tax registration on EmaraTax. `SKILL.md` is...</description>
+      
       
     </item>
     <item>
@@ -287,19 +300,6 @@ Coding agents burn tokens grepping a repository and reading whole files to answe
 
 ripwire is a zero-dependency C++23 CLI plus an optional MCP server. It parses 21 languages via vendore...</description>
       <category>Shell</category>
-      
-    </item>
-    <item>
-      <title>Lean</title>
-      <link>https://moses-y.github.io/blog/Lean.html</link>
-      <guid isPermaLink="true">https://moses-y.github.io/blog/Lean.html</guid>
-      <pubDate>Sun, 06 Sep 2026 00:00:00 GMT</pubDate>
-      <description>## The Problem  
-Quantitative teams often need a production‑grade, multi‑asset back‑testing and live‑trading engine that supports both Python and C# strategies, integrates alternative data, and can be deployed behind a Docker pipeline.  Building or adapting such a stack from scratch adds engineering overhead and risks inconsistent behavior across environments.
-
-## What This Does  
-Lean is an event‑driven algorithmic‑trading engine (≈6 280 files) that ships with plug‑in points for alphas, risk ma...</description>
-      <category>C#</category>
       
     </item>
   </channel>

@@ -133,8 +133,67 @@ npm start</code></pre>
                 
 
                 
+                <div class="an-block">
+                    <span class="an-lab">Module dependencies</span>
+                    <p class="an-note">The 10 most depended-upon modules of 41, from static import analysis. Red outline marks a module in an import cycle.</p>
+                    <div class="mermaid">graph LR
+  n0_src_Application_Application[&quot;Application&quot;]
+  n1_src_Application_UI_EventBus[&quot;EventBus&quot;]
+  n2__Application_Utils_Resources[&quot;Resources&quot;]
+  n3_plication_Utils_EventEmitter[&quot;EventEmitter&quot;]
+  n4_rc_Application_Camera_Camera[&quot;Camera&quot;]
+  n5_src_Application_Utils_Time[&quot;Time&quot;]
+  n6_src_Application_Utils_Sizes[&quot;Sizes&quot;]
+  n7_src_Application_Utils_Mouse[&quot;Mouse&quot;]
+  n8_Application_Utils_BakedModel[&quot;BakedModel&quot;]
+  n9_src_Application_Renderer[&quot;Renderer&quot;]
+  n0_src_Application_Application --&gt; n6_src_Application_Utils_Sizes
+  n0_src_Application_Application --&gt; n5_src_Application_Utils_Time
+  n0_src_Application_Application --&gt; n4_rc_Application_Camera_Camera
+  n0_src_Application_Application --&gt; n9_src_Application_Renderer
+  n0_src_Application_Application --&gt; n7_src_Application_Utils_Mouse
+  n0_src_Application_Application --&gt; n2__Application_Utils_Resources
+  n4_rc_Application_Camera_Camera --&gt; n0_src_Application_Application
+  n4_rc_Application_Camera_Camera --&gt; n6_src_Application_Utils_Sizes
+  n4_rc_Application_Camera_Camera --&gt; n3_plication_Utils_EventEmitter
+  n4_rc_Application_Camera_Camera --&gt; n9_src_Application_Renderer
+  n4_rc_Application_Camera_Camera --&gt; n2__Application_Utils_Resources
+  n4_rc_Application_Camera_Camera --&gt; n1_src_Application_UI_EventBus
+  n4_rc_Application_Camera_Camera --&gt; n5_src_Application_Utils_Time
+  n9_src_Application_Renderer --&gt; n0_src_Application_Application
+  n9_src_Application_Renderer --&gt; n6_src_Application_Utils_Sizes
+  n9_src_Application_Renderer --&gt; n4_rc_Application_Camera_Camera
+  n9_src_Application_Renderer --&gt; n1_src_Application_UI_EventBus
+  n9_src_Application_Renderer --&gt; n5_src_Application_Utils_Time
+  classDef cyc stroke:#ef4444,stroke-width:2px;
+  class n0_src_Application_Application,n2__Application_Utils_Resources,n4_rc_Application_Camera_Camera,n7_src_Application_Utils_Mouse,n9_src_Application_Renderer cyc;</div>
+                </div>
 
                 
+                <div class="an-block">
+                    <span class="an-lab">Dependencies</span>
+                    <p class="an-note"><strong>25</strong> of 45 declared dependencies are a major version behind. Resolved 45 of 45 against the registry.</p>
+                    <table class="tbl an-deps">
+                        <tr><th>Package</th><th>Declared</th><th>Latest</th><th>Behind</th></tr>
+                        <tr><td><code>@tweenjs/tween.js</code></td>
+                            <td>^18.6.4</td><td>25.0.0</td>
+                            <td class="beh">7 major</td></tr><tr><td><code>framer-motion</code></td>
+                            <td>^6.3.1</td><td>13.1.0</td>
+                            <td class="beh">7 major</td></tr><tr><td><code>copy-webpack-plugin</code></td>
+                            <td>^10.2.4</td><td>14.0.0</td>
+                            <td class="beh">4 major</td></tr><tr><td><code>nodemailer</code></td>
+                            <td>^6.7.3</td><td>9.0.5</td>
+                            <td class="beh">3 major</td></tr><tr><td><code>typescript</code></td>
+                            <td>^4.6.2</td><td>7.0.2</td>
+                            <td class="beh">3 major</td></tr><tr><td><code>webpack-cli</code></td>
+                            <td>^4.9.2</td><td>7.2.2</td>
+                            <td class="beh">3 major</td></tr><tr><td><code>babel-loader</code></td>
+                            <td>^8.2.3</td><td>10.1.1</td>
+                            <td class="beh">2 major</td></tr><tr><td><code>camera-controls</code></td>
+                            <td>^1.34.2</td><td>3.1.2</td>
+                            <td class="beh">2 major</td></tr>
+                    </table>
+                </div>
 
                 
                 <div class="an-block">

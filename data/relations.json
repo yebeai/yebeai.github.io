@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-09T10:17:49.191Z",
+  "generated": "2026-09-09T12:25:12.413Z",
   "description": "Materialised relations between repositories. Two edge types, differing in provenance, which is the thing to check before trusting either of them.",
   "edgeTypes": {
     "stack": {
@@ -27,7 +27,7 @@
     "neighboursPerRepository": 12
   },
   "counts": {
-    "repositories": 1520,
+    "repositories": 1521,
     "withDeclaredDependencies": 459,
     "semanticEdges": 3444,
     "clusters": 61,
